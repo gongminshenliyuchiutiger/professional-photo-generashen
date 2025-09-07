@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專業形象照神生成系統</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS -->
+    <style>
+        /* --- Constants for Icon Sizes --- */
+        :root {
+            --icon-size-standard: 1.5rem; /* 24px */
+            --icon-size-large: 2rem;     /* 32px */
+        }
+        
+        /* --- NEW: BRIGHT, MINIMALIST, STREAMLINED THEME COLOR PALETTE & BASE STYLES --- */
+        :root {
+            --bg-light-primary: #FFFFFF; /* Pure white for main background */
+            --bg-panel-light: #F8FAFC;   /* Very light gray for main panels, subtle contrast */
+            --bg-sub-panel-light: #F0F4F8; /* Even lighter gray for sub-panels */
+            
+            --text-dark-primary: #2C3E50; /* Dark blue-gray for main text */
+            --text-muted-light: #7F8C8D; /* Muted gray for secondary text */
+
+            --accent-blue-main: #3498DB; /* Vibrant blue for primary actions/highlights */
+            --accent-blue-light: #5DADE2; /* Lighter blue for hover */
+            --accent-green-vibrant: #2ECC71; /* Vibrant green for success/CTA */
+            --accent-green-light: #58D68D; /* Lighter green for hover */
+            --accent-purple-soft: #A78BFA; /* Soft purple for secondary highlights/glows (retained for mascot/particles) */
+
+            --border-soft: #E0E6ED;     /* Very light gray for borders */
+            --border-highlight: #C2D9ED; /* Slightly darker for subtle highlights */
+            
+            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08); /* Very soft, light shadow */
+            --shadow-subtle: 0 2px 6px rgba(0, 0, 0, 0.05);
+            --shadow-inset-light: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+
+            --error-light: #E74C3C; /* Clean red for errors */
+
+            --font-display: 'Inter', sans-serif; 
+            --font-body: 'Inter', sans-serif;
+        }
+        
+        body { 
+            font-family: var(--font-body); 
+            background-color: var(--bg-light-primary); 
+            color: var(--text-dark-primary); 
+            line-height: 1.6;
+            overflow-x: hidden; 
+        }
+
+        /* Font Awesome specific sizing to match conceptual sizes */
+        .fa-icon-standard { font-size: var(--icon-size-standard); } /* 1.5rem (24px) */
+        .fa-icon-large { font-size: var(--icon-size-large); }     /* 2rem (32px) */
+        .fa-icon-medium { font-size: 1.25rem; } /* For w-5 h-5 (20px) */
+        .fa-icon-small { font-size: 1rem; }    /* For w-4 h-4 (16px) */
+        .fa-icon-xl { font-size: 2.5rem; }     /* For larger placeholder icon */
+        .fa-icon-xxl { font-size: 3.5rem; }    /* For even larger placeholder icon */
+
+
+        /* NEW: Grid pattern for profile picture previews, with a cleaner look */
+        /* REMOVED bg-grid-pattern from image wrapper for profile pictures, but keeping the class for other uses if needed */
+        .bg-grid-pattern {
+            background-color: var(--bg-sub-panel-light);
+            background-image: linear-gradient(var(--border-soft) 1px, transparent 1px), 
+                              linear-gradient(90deg, var(--border-soft) 1px, transparent 1px); 
+            background-size: 25px 25px; 
+            box-shadow: var(--shadow-inset-light); /* Inner subtle shadow */
+            border: 1px solid var(--border-soft); 
+        }
+        
+        /* Animations */
+        @keyframes fade-in-down {
+            0% { opacity: 0; transform: translateY(-30px) translateX(-50%); }
+            100% { opacity: 1; transform: translateY(0) translateX(-50%); }
+        }
+        .animate-fade-in-down { animation: fade-in-down 0.5s cubic-bezier(.25,.8,.25,1) forwards; }
+        
+        /* --- API Key Section Styles --- */
+        .info-box {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 4px solid;
+            font-size: 0.9rem;
+            background-color: rgba(52, 152, 219, 0.08); /* Light blue background */
+            border-color: var(--accent-blue-main);
+            color: var(--text-dark-primary); 
+        }
+        .api-key-label-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .api-key-label-wrapper label {
+            font-size: 0.95rem; font-weight: 500; color: var(--text-dark-primary); flex-grow: 1;
+        }
+        .api-tutorial-link { color: var(--accent-blue-main); cursor: pointer; text-decoration: underline dotted; font-size: 0.9rem; }
+
+        /* --- Mascot Styles --- */
+        #mascot {
+            position: fixed;
+            bottom: 30px; 
+            left: 30px;
+            width: clamp(110px, 16vw, 160px); 
+            z-index: 998;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(.36,.07,.19,.97);
+            /* Keeping original glow colors for contrast and 'magic' feel */
+            filter: drop-shadow(0 0 10px var(--accent-blue-main)) drop-shadow(0 0 20px var(--accent-purple-soft)); 
+        }
+        #mascot:hover {
+            transform: scale(1.15); 
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            filter: drop_shadow(0 0 15px var(--accent-blue-main)) drop_shadow(0 0 30px var(--accent-purple-soft)); 
+        }
+        @keyframes shake {
+            10%, 90% { transform: scale(1.15) translate3d(-1px, 0, 0); }
+            20%, 80% { transform: scale(1.15) translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: scale(1.15) translate3d(-3px, 0, 0); }
+            40%, 60% { transform: scale(1.15) translate3d(3px, 0, 0); }
+        }
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 1001;
+        }
+
+        /* --- Global Component Adjustments (NEW LAYOUT) --- */
+        .container { 
+            max-width: 1500px; 
+            margin: 0 auto; 
+            padding: 50px 30px 100px; 
+        }
+        header { text-align: center; margin-bottom: 70px; }
+        header h1 { 
+            font-family: var(--font-display); 
+            font-size: 5.5rem; 
+            font-weight: 900; 
+            color: var(--text-dark-primary); /* Dark title on light background */
+            letter-spacing: -0.06em; 
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Soft, subtle shadow */
+        }
+        header p { 
+            font-family: var(--font-body);
+            font-size: 1.5rem; 
+            color: var(--text-muted-light); 
+            margin-top: 15px; 
+            letter-spacing: 0.03em;
+        }
+
+        /* NEW: Initial Setup Grid for API Key and Image Upload */
+        .initial-setup-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Default to single column on small screens */
+            gap: 40px;
+            margin-bottom: 50px; /* Reduced margin as options panel is removed */
+        }
+        @media (min-width: 1024px) { /* Tailwind 'lg' breakpoint */
+            .initial-setup-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* NEW: Main Console Panel */
+        .console-panel {
+            background-color: var(--bg-panel-light);
+            backdrop-filter: blur(5px); /* Lighter blur */
+            border-radius: 30px; 
+            padding: 45px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-soft); 
+            margin-bottom: 90px;
+            display: flex;
+            flex-direction: column; 
+            gap: 40px; 
+            position: relative;
+        }
+        /* Console border glow animation - made subtle */
+        .console-panel::before {
+            content: '';
+            position: absolute;
+            top: 0px; left: 0px; right: 0px; bottom: 0px; 
+            background: linear-gradient(45deg, var(--accent-blue-main), var(--accent-green-vibrant), var(--accent-blue-main));
+            background-size: 200% 200%; /* Reduced for performance */
+            border-radius: 30px;
+            z-index: -1;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.5s ease-in-out;
+            animation: borderGlow 6s ease infinite; /* Reduced duration */
+        }
+        .console-panel:hover::before {
+            opacity: 0.08; /* Very subtle glow on hover */
+        }
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        .console-section-header { 
+            font-family: var(--font-display);
+            font-size: 2.2rem; 
+            font-weight: 700; 
+            color: var(--text-dark-primary); 
+            margin-bottom: 30px; 
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-soft); 
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Very subtle */
+            letter-spacing: 0.04em;
+            display: flex; /* Added for icon alignment */
+            align-items: center; /* Added for icon alignment */
+            gap: 12px; /* Added for icon spacing */
+        }
+        /* Style for icons in console-section-header */
+        .console-section-header .fa-solid {
+            color: var(--accent-blue-main); /* Icon color */
+        }
+        
+        /* console-grid-3col and related styles are removed */
+
+
+        /* NEW: Unified Sub-Panel Styling */
+        .console-sub-panel {
+            background-color: var(--bg-sub-panel-light);
+            border-radius: 20px; 
+            padding: 30px;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-subtle);
+        }
+        .console-sub-panel h3, .console-sub-panel h4 { 
+            color: var(--text-dark-primary); 
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.6rem; 
+            text-shadow: none;
+            display: flex; /* Added for icon alignment */
+            align-items: center; /* Added for icon alignment */
+            gap: 10px; /* Added for icon spacing */
+        }
+         /* Style for icons in console-sub-panel h3 */
+        .console-sub-panel h3 .fa-solid {
+            color: var(--accent-blue-main); /* Icon color */
+        }
+        .console-sub-panel .info-text { 
+            color: var(--text-muted-light);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        /* Image Upload Area */
+        .image-upload-area {
+            height: 380px; 
+            border: 3px dashed var(--border-soft); 
+            background-color: var(--bg-light-primary);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            overflow: hidden;
+            position: relative;
+        }
+        .image-upload-area.drag-over {
+            border-color: var(--accent-blue-main); 
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .image-upload-area:hover:not(.has-image) { 
+            border-color: var(--accent-blue-light); 
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.1); 
+        }
+        .image-upload-area img { object-fit: cover; } /* Changed to cover for profile pictures */
+        .upload-placeholder { color: var(--text-muted-light); }
+        .upload-placeholder .fa-solid { font-size: 3.5rem; margin-bottom: 20px; color: var(--accent-blue-main); }
+        .upload-buttons { margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; } 
+
+
+        /* Inputs and Textareas (New Styling) */
+        input[type="password"], textarea, select, input[type="number"] {
+            width: 100%; 
+            padding: 14px 18px; 
+            border-radius: 10px; 
+            border: 1px solid var(--border-soft);
+            background-color: var(--bg-light-primary); 
+            color: var(--text-dark-primary); 
+            font-size: 1rem;
+            transition: all 0.3s ease-out;
+            box-shadow: var(--shadow-inset-light);
+            -webkit-appearance: none; 
+            -moz-appearance: none;
+            appearance: none;
+        }
+        select {
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="%237F8C8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); 
+            background-repeat: no-repeat;
+            background-position: right 1em top 50%; 
+            background-size: 0.9em auto;
+        }
+
+        input[type="password"]:focus, textarea:focus, select:focus, input[type="number"]:focus { 
+            outline: none; 
+            border-color: var(--accent-blue-main); 
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2), var(--shadow-inset-light); 
+        }
+        textarea { resize: vertical; min-height: 90px; }
+
+
+        /* Button Styling Overrides (NEW) */
+        .button {
+            padding: 14px 30px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            letter-spacing: 0.08em; 
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: var(--shadow-subtle);
+        }
+        .button::before { /* Subtle accent border effect */
+            content: '';
+            position: absolute;
+            top: 0px; left: 0px; right: 0px; bottom: 0px; 
+            background: linear-gradient(45deg, var(--accent-blue-main), var(--accent-green-vibrant), var(--accent-blue-main));
+            background-size: 200% 200%; /* Reduced for performance */
+            border-radius: 12px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .button:hover::before {
+            opacity: 0.1; /* Very subtle effect */
+            animation: buttonGlow 2.5s linear infinite;
+        }
+        @keyframes buttonGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .button-primary {
+            background: var(--accent-green-vibrant);
+            color: var(--bg-light-primary);
+            border: 1px solid var(--accent-green-vibrant);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .button-primary:hover:not(:disabled) {
+            background: var(--accent-green-light); 
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
+        }
+        .button-secondary {
+            background: var(--bg-light-primary);
+            color: var(--accent-blue-main);
+            border: 1px solid var(--border-highlight);
+            box-shadow: var(--shadow-subtle);
+        }
+        .button-secondary:hover:not(:disabled) {
+            background: var(--accent-blue-main);
+            color: var(--bg-light-primary);
+            border-color: var(--accent-blue-main);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+        }
+        /* Explicitly change Font Awesome icon color on hover for secondary button */
+        .button-secondary:hover:not(:disabled) .fa-solid {
+            color: var(--bg-light-primary); /* Ensure icon also turns white */
+        }
+        .button:disabled {
+            background: var(--bg-sub-panel-light);
+            border-color: var(--border-soft);
+            color: var(--text-muted-light);
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+        .button-icon-only {
+            padding: 12px; 
+            width: 50px; 
+            height: 50px;
+            border-radius: 50%;
+        }
+        .button-icon-only .fa-solid { font-size: 1.25rem; } /* fa-icon-medium */
+
+        /* Pose Count Buttons and Style Buttons - Removed these styles as the features are removed */
+        /* .pose-count-buttons, .style-buttons-container { 
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px; 
+            margin-bottom: 15px;
+            justify-content: flex-start; 
+        }
+        .pose-count-button, .style-button { 
+            padding: 9px 18px;
+            font-size: 0.95rem;
+            min-width: 70px;
+            background: var(--bg-light-primary); 
+            border: 1px solid var(--border-soft);
+            color: var(--text-dark-primary); 
+            box-shadow: var(--shadow-inset-light);
+            border-radius: 25px; 
+        }
+        .pose-count-button.selected, .style-button.selected {
+            background-color: var(--accent-blue-main);
+            border-color: var(--accent-blue-main);
+            color: var(--bg-light-primary);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+            transform: translateY(-2px);
+        }
+        .pose-count-button.selected::before, .style-button.selected::before {
+            opacity: 0; 
+        } */
+
+
+        /* Pose selection grid - Removed these styles as the features are removed */
+        /* .pose-grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); 
+            gap: 12px; 
+            margin-top: 20px;
+        }
+        .pose-label { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+            background-color: var(--bg-light-primary);
+            color: var(--text-dark-primary);
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            font-weight: 500;
+            text-transform: capitalize; 
+            position: relative;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-subtle);
+        }
+        .pose-label .edit-prompt-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: var(--text-muted-light);
+            font-size: 0.9em;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+            padding: 5px; 
+        }
+        .pose-label:hover .edit-prompt-btn {
+            opacity: 1;
+        }
+        .pose-label .edit-prompt-btn:hover {
+            color: var(--accent-blue-main);
+        }
+
+
+        .pose-label:hover:not(.selected) {
+            border-color: var(--accent-blue-main);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.1);
+            color: var(--accent-blue-main);
+        }
+        .pose-label.selected {
+            background-color: var(--accent-blue-main);
+            border-color: var(--accent-blue-main);
+            color: var(--bg-light-primary);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
+        }
+        .pose-label input[type="checkbox"] { display: none; } */
+
+
+        /* --- Global Generate Button --- */
+        .generate-button-area {
+            text-align: center;
+            margin-top: 50px; 
+            margin-bottom: 90px; /* Added margin-bottom to separate from results */
+        }
+        .generate-button-area .button {
+            width: 70%; 
+            max-width: 450px;
+            padding: 18px 0; 
+            font-size: 1.6rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4); 
+        }
+        .generate-button-area .button:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.6), 0 0 10px rgba(52, 152, 219, 0.1); 
+        }
+
+
+        /* --- Results Panel --- */
+        .results-section { margin-top: 100px; text-align: center; }
+        .results-section .console-section-header { color: var(--text-dark-primary); }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 30px; 
+            margin-top: 50px;
+        }
+        .results-loader-progress {
+            background-color: var(--bg-sub-panel-light);
+            border-radius: 50px; 
+            height: 10px; 
+            overflow: hidden;
+            box-shadow: var(--shadow-inset-light);
+            border: 1px solid var(--border-soft);
+        }
+        .results-loader-bar {
+            background: linear-gradient(90deg, var(--accent-blue-main), var(--accent-green-vibrant)); 
+            height: 100%;
+            border-radius: 50px;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3), 0 0 15px rgba(46, 204, 113, 0.2); 
+        }
+
+
+        /* Profile Picture Display Cards (New Styling - Renamed from sticker-card-base) */
+        .profile-card-base { 
+            padding: 25px; 
+            background-color: var(--bg-sub-panel-light);
+            border-radius: 20px;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid var(--border-soft);
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-card-base:hover {
+            transform: translateY(-8px) scale(1.04); 
+            box-shadow: var(--shadow-soft);
+            border-color: var(--accent-blue-main);
+        }
+        .profile-card-image-wrapper { /* Renamed from sticker-card-image-wrapper */
+            aspect-ratio: 1 / 1;
+            background-color: var(--bg-light-primary); /* Clean white background for profile pictures */
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-soft);
+        }
+        .profile-card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; } /* Changed to cover */
+        .profile-card-pose-name { /* Renamed from sticker-card-emotion */
+            text-align: center; 
+            margin-top: 20px; 
+            font-size: 1.2rem; 
+            font-weight: 600; 
+            color: var(--text-dark-primary); 
+            text-shadow: none;
+        }
+        .profile-actions { /* Renamed from sticker-actions */
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .profile-card-base:hover .profile-actions { opacity: 1; }
+        .profile-actions button {
+            background-color: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-soft);
+            color: var(--text-dark-primary);
+            padding: 10px; 
+            border-radius: 50%;
+            transition: all 0.2s ease-out;
+            box-shadow: var(--shadow-subtle);
+        }
+        .profile-actions button:hover {
+            background-color: var(--accent-blue-main);
+            color: var(--bg-light-primary);
+            border-color: var(--accent-blue-main);
+            transform: scale(1.1);
+        }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: max-content;
+            background-color: var(--text-dark-primary);
+            color: var(--bg-light-primary);
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+        }
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--text-dark-primary) transparent transparent transparent;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+        /* Loader and Error Cards */
+        @keyframes mascot-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .loading-card-mascot {
+            animation: mascot-spin 1.2s linear infinite;
+            width: 70%; 
+            height: 70%;
+            object-fit: contain;
+            /* Keep original mascot glow colors for 'magic' feel */
+            filter: drop_shadow(0 0 6px var(--accent-blue-main)) drop_shadow(0 0 12px var(--accent-purple-soft));
+        }
+
+        .error-card-border {
+            border-color: var(--error-light);
+        }
+        .error-card-text {
+            color: var(--error-light);
+        }
+
+        /* NEW: Custom upload loading animation */
+        @keyframes upload-glow {
+            0% { box-shadow: 0 0 6px var(--accent-blue-main), var(--shadow-inset-light); }
+            50% { box-shadow: 0 0 15px rgba(52, 152, 219, 0.2), inset 0 0 10px rgba(52, 152, 219, 0.1); }
+            100% { box-shadow: 0 0 6px var(--accent-blue-main), var(--shadow-inset-light); }
+        }
+        .uploading-animation {
+            animation: upload-glow 1.8s infinite ease-in-out;
+        }
+
+        /* NEW: AI thinking animation (for prompt generation) */
+        /* .ai-thinking-animation .fa-solid { // This animation is for prompt generation, which is removed
+            animation: ai-thinking 1.5s infinite ease-in-out;
+            color: var(--accent-purple-soft); 
+        } */
+
+
+        /* Footer */
+        footer { 
+            text-align: center; 
+            padding: 40px 0; 
+            font-size: 0.9rem; 
+            color: var(--text-muted-light); 
+            /* REMOVED: border-top: 1px solid var(--border-soft); */
+            margin-top: 100px;
+        }
+
+        /* Modals */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; 
+            align-items: center; z-index: 1000; animation: fadeIn 0.3s;
+        }
+        .modal-content { 
+            background: var(--bg-panel-light); padding: 40px; border-radius: 25px; 
+            max-width: 800px; width: 90%; position: relative; box-shadow: var(--shadow-soft); 
+            max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-highlight);
+            backdrop-filter: blur(8px);
+        }
+        .modal-content h3 { color: var(--accent-blue-main); margin-bottom: 25px; font-size: 2rem; }
+        .modal-content p, .modal-content li { color: var(--text-dark-primary); margin-bottom: 12px; }
+        .modal-content a { color: var(--accent-blue-main); text-decoration: none; }
+        .modal-content a:hover { text-decoration: underline; }
+        .modal-close { 
+            position: absolute; top: 20px; right: 20px; font-size: 2.8rem; 
+            color: var(--text-muted-light); cursor: pointer; transition: transform 0.2s; 
+        }
+        .modal-close:hover { transform: scale(1.15); color: var(--accent-blue-main); }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 1279px) { /* Tablets */
+            header h1 { font-size: 4rem; }
+            header p { font-size: 1.1rem; }
+            /* .api-key-section { margin-bottom: 40px; } */ /* Controlled by initial-setup-grid gap */
+            .initial-setup-grid { margin-bottom: 40px; }
+            .console-panel { padding: 35px; gap: 35px; border-radius: 25px; }
+            .console-section-header { font-size: 1.8rem; margin-bottom: 20px; padding-bottom: 12px; gap: 10px;}
+            .console-sub-panel { padding: 25px; border-radius: 18px; } 
+            .console-sub-panel h3, .console-sub-panel h4 { font-size: 1.4rem; margin-bottom: 18px; gap: 8px;}
+            .console-sub-panel .info-text { font-size: 0.9rem; margin-bottom: 18px;}
+            .image-upload-area { height: 320px; border-width: 2px; border-radius: 15px; }
+            .upload-buttons { gap: 12px; margin-top: 20px; }
+            .button { padding: 12px 22px; gap: 10px; font-size: 0.95rem; border-radius: 10px; border-width: 1px; }
+            /* .pose-grid { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; } */ /* Removed */
+            .generate-button-area .button { font-size: 1.4rem; padding: 16px 0; }
+            .results-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+            .profile-card-base { padding: 20px; border-radius: 15px; }
+            .profile-card-pose-name { font-size: 1rem; margin-top: 15px; }
+            .profile-actions { top: 12px; right: 12px; gap: 8px; }
+            .profile-actions button { padding: 9px; }
+            #mascot { width: clamp(90px, 14vw, 130px); bottom: 20px; left: 20px; }
+            .modal-content { padding: 35px; border-radius: 20px; }
+            .modal-content h3 { font-size: 1.8rem; margin-bottom: 20px; }
+            .modal-close { font-size: 2.2rem; top: 15px; right: 15px; }
+            footer { margin-top: 90px; padding: 35px 0; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 767px) { /* Mobile */
+            header h1 { font-size: 3rem; letter-spacing: -0.04em; }
+            header p { font-size: 0.9rem; margin-top: 10px; }
+            .container { padding: 20px 15px 50px; }
+            /* .api-key-section { margin-bottom: 30px; } */ /* Controlled by initial-setup-grid gap */
+            .initial-setup-grid { margin-bottom: 30px; }
+            .console-panel { padding: 20px; gap: 25px; margin-bottom: 50px; border-radius: 20px;}
+            .console-section-header { font-size: 1.5rem; margin-bottom: 15px; padding-bottom: 8px; gap: 8px; }
+            .console-sub-panel { padding: 15px; border-radius: 15px; } 
+            .console-sub-panel h3, .console-sub-panel h4 { font-size: 1.2rem; margin-bottom: 12px; gap: 6px;}
+            .console-sub-panel .info-text { font-size: 0.8rem; margin-bottom: 12px;}
+            .image-upload-area { height: 250px; border-width: 2px; border-radius: 12px; }
+            .upload-placeholder .fa-solid { font-size: 3rem; margin-bottom: 15px; }
+            .upload-buttons { flex-direction: column; gap: 10px; margin-top: 15px; }
+            .button { padding: 10px 18px; font-size: 0.85rem; gap: 8px; border-radius: 8px; border-width: 1px; }
+            input[type="password"], textarea, select, input[type="number"] { padding: 10px 12px; font-size: 0.85rem; border-radius: 8px;}
+            /* .style-buttons-container { gap: 6px; margin-top: 12px; justify-content: center; } */ /* Removed */
+            /* .pose-count-button, .style-button { padding: 7px 10px; font-size: 0.75rem; border-radius: 18px; } */ /* Removed */
+            /* .pose-grid { grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin-top: 15px; } */ /* Removed */
+            /* .pose-label { padding: 8px; font-size: 0.7rem; border-radius: 6px; } */ /* Removed */
+            /* .pose-label .edit-prompt-btn { top: 3px; right: 3px; font-size: 0.8em; padding: 3px; } */ /* Removed */
+            .generate-button-area .button { font-size: 1.2rem; padding: 14px 0; border-radius: 10px; }
+            .results-section { margin-top: 70px; }
+            .results-grid { gap: 12px; margin-top: 30px; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));}
+            .profile-card-base { padding: 15px; border-radius: 12px; }
+            .profile-card-pose-name { font-size: 0.9rem; margin-top: 12px; }
+            .profile-actions { top: 10px; right: 10px; gap: 6px; }
+            .profile-actions button { padding: 7px; }
+            .modal-content { padding: 25px; border-radius: 15px; }
+            .modal-content h3 { font-size: 1.5rem; margin-bottom: 15px; }
+            .modal-close { font-size: 2rem; top: 10px; right: 10px; }
+            footer { margin-top: 70px; padding: 30px 0; font-size: 0.75rem; }
+            #mascot { width: clamp(70px, 16vw, 100px); bottom: 15px; left: 15px; }
+        }
+
+        /* NEW: Custom Loading Spinner CSS */
+        @keyframes spin-circle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid var(--border-soft); /* Light gray base for the circle */
+            border-top-color: var(--accent-blue-main); /* First color of the arc */
+            border-right-color: var(--accent-green-vibrant); /* Second color of the arc */
+            animation: spin-circle 0.8s linear infinite;
+        }
+
+    </style>
+
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone for JSX conversion -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- JSZip CDN (for downloading all images as zip) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+</head>
+<body class="bg-light-primary text-dark-primary">
+    <div id="root"></div>
+
+    <!-- Mascot element -->
+    <img id="mascot" src="image/LiyuChillGuy.svg" alt="吉祥物 LiyuChillGuy">
+    
+    <script>
+        // --- Mascot and Particle Effects Logic (Optimized) ---
+        const mascotElement = document.getElementById('mascot');
+        const audioManager = { 
+            ctx: null,
+            init: function() {
+                try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } 
+                catch (e) { console.error("Web Audio API is not supported."); this.ctx = null; }
+            },
+            _playSoundNode: function(type, frequency, duration, volume, rampTargetFreq) {
+                if (!this.ctx) return;
+                const oscillator = this.ctx.createOscillator();
+                const gainNode = this.ctx.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(this.ctx.destination);
+                oscillator.type = type;
+                oscillator.frequency.setValueAtTime(frequency, this.ctx.currentTime);
+                if (rampTargetFreq) oscillator.frequency.linearRampToValueAtTime(rampTargetFreq, this.ctx.currentTime + duration * 0.8);
+                gainNode.gain.setValueAtTime(volume, this.ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, this.ctx.currentTime + duration);
+                oscillator.start(this.ctx.currentTime);
+                oscillator.stop(this.ctx.currentTime + duration);
+            },
+            play: async function(soundName) {
+                if (!this.ctx) return;
+                if (this.ctx.state === 'suspended') { try { await this.ctx.resume(); } catch (e) { console.error("Failed to resume AudioContext:", e); return; } }
+                if (soundName === 'sparkle') {
+                    this._playSoundNode('triangle', 1500, 0.08, 0.1, 2500); 
+                    setTimeout(() => this._playSoundNode('sine', 1800, 0.08, 0.06), 60);
+                }
+            }
+        };
+        audioManager.init();
+
+        function createParticles(x, y) {
+            const particleCount = 10; // Reduced for performance
+            // Updated colors to match the new theme, blending the magic feel
+            const colors = ['var(--accent-blue-main)', 'var(--accent-blue-light)', 'var(--accent-purple-soft)', 'var(--accent-green-vibrant)']; 
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                document.body.appendChild(particle);
+                const size = Math.random() * 8 + 4; // Slightly smaller
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 60 + 40; // Slightly shorter distance
+                const endX = Math.cos(angle) * distance;
+                const endY = Math.sin(angle) * distance;
+                particle.style.left = `${x - size / 2}px`;
+                particle.style.top = `${y - size / 2}px`;
+                const animation = particle.animate(
+                    [{ transform: 'translate(0, 0) scale(1)', opacity: 1 }, { transform: `translate(${endX}px, ${endY}px) scale(0)`, opacity: 0 }],
+                    { duration: Math.random() * 600 + 400, easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)', fill: 'forwards' } 
+                );
+                animation.onfinish = () => particle.remove();
+            }
+        }
+
+        if (mascotElement) {
+            mascotElement.addEventListener('click', (e) => {
+                audioManager.play('sparkle');
+                const rect = mascotElement.getBoundingClientRect();
+                createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            });
+        }
+    </script>
+
+    <script type="text/babel">
+        // Destructure React hooks
+        const { useState, useRef, useEffect, useCallback, useMemo } = React;
+
+        // --- Constants ---
+        const CONSTANTS = {
+            API_URLS: {
+                GENERATE_CONTENT: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+                GENERATE_IMAGE: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent',
+            },
+            MAX_RETRIES: 5,
+            INITIAL_BACKOFF: 1000,
+            FIXED_GENERATE_COUNT: 3, // Hardcoded to 3
+            DEBOUNCE_DELAY: 300,
+            GENERATION_DELAY: 500,
+            MAX_IMAGE_SIZE_MB: 5,
+            MAX_IMAGE_DIMENSIONS: { width: 2048, height: 2048 },
+        };
+
+        // --- Predefined Professional Poses (Randomly selected) ---
+        const PREDEFINED_PROFESSIONAL_POSES = [
+            { id: '自信微笑', base: 'A person with a confident and friendly smile, facing slightly towards the camera, wearing professional business attire (suit/blazer/dress shirt), in a clean and modern office or studio background with soft, flattering lighting. Headshot to waist up.' },
+            { id: '沉穩思考', base: 'A person in a thoughtful pose, looking slightly to the side or down, perhaps with a hand near the chin or a slight lean, wearing smart casual business attire, in a modern, slightly blurred corporate lobby or library background. Professional lighting. Headshot to chest up.' },
+            { id: '專業互動', base: 'A person making eye contact directly with the camera, with an open and welcoming gesture (e.g., arms slightly open, not crossed), wearing business professional clothing, in a contemporary meeting room setting with a subtle whiteboard or cityscape view in the background. Bright and even lighting. Headshot to waist up.' },
+            { id: '簡潔專業', base: 'A person with a neutral, approachable expression, hands gently clasped in front or at the side, wearing a well-fitted professional outfit, against a simple, solid color (e.g., light grey, soft blue) or subtly textured studio background. Clear, soft lighting. Headshot to chest up.' },
+            { id: '側身凝視', base: 'A person facing slightly to the side (e.g., 3/4 profile), looking directly towards the camera with a calm and focused expression, wearing elegant business attire, in a sophisticated, slightly blurred interior like a contemporary gallery or office with architectural elements. Soft, directional lighting. Headshot to chest up.' },
+            { id: '活力自信', base: 'A person with a dynamic and energetic pose, maybe a slight lean forward or subtle arm gesture, a bright, engaging smile, wearing modern business casual attire. Background could be a bright, minimalist coworking space or a well-lit outdoor urban setting (blurred). Lively, natural light. Headshot to waist up.' },
+            { id: '輕鬆自然', base: 'A person with a relaxed yet professional demeanor, a gentle smile, one hand casually in a pocket or resting, wearing comfortable but smart business casual clothes. In a warm, inviting environment like a stylish coffee shop corner or a bright common area. Soft, ambient lighting. Headshot to waist up.' },
+            { id: '權威嚴謹', base: 'A person with a serious and authoritative expression, shoulders squared, wearing a formal business suit/dress. Against a dark, rich, and slightly moody background like a paneled office wall or a deep-toned studio backdrop. Strong, focused lighting with some shadows to add depth. Headshot to chest up.' }
+        ];
+
+        // --- Utility Functions ---
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        const debounce = (func, wait) => {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func(...args), wait);
+            };
+        };
+
+        const sanitizeApiKey = (key) => key.replace(/[^a-zA-Z0-9-_]/g, '').trim();
+
+        const setAppError = (setError, message) => {
+            console.error(message);
+            setError(message);
+        };
+
+        const fetchWithRetry = (url, options, retries = CONSTANTS.MAX_RETRIES, backoff = CONSTANTS.INITIAL_BACKOFF) => {
+            return new Promise((resolve, reject) => {
+                const attempt = async (retryCount, delay) => {
+                    try {
+                        const response = await fetch(url, options);
+                        if (!response.ok) {
+                            const errorData = await response.json().catch(() => ({}));
+                            console.error('API 錯誤:', errorData);
+                            if (response.status === 429 && retryCount > 0) {
+                                console.log(`請求頻率過高。將在 ${delay / 1000} 秒後重試...`);
+                                setTimeout(() => attempt(retryCount - 1, delay * 2), delay);
+                            } else if (response.status === 401) {
+                                reject(new Error(`API 請求失敗，狀態碼 401：未授權。請確認您的 API 金鑰是否有效。`));
+                            }
+                            else {
+                                reject(new Error(`API 請求失敗，狀態碼 ${response.status}: ${errorData.error?.message || '未知錯誤'}`));
+                            }
+                        } else {
+                            resolve(response.json());
+                        }
+                    } catch (error) {
+                        if (retryCount > 0) {
+                            console.log(`請求失敗。將在 ${delay / 1000} 秒後重試...`, error);
+                            setTimeout(() => attempt(retryCount - 1, delay * 2), delay);
+                        } else {
+                            reject(error);
+                        }
+                    }
+                };
+                attempt(retries, backoff);
+            });
+        };
+
+        const generateImageWithRetry = async (payload, getActiveApiKey, totalAttempts = 3) => {
+            let lastError;
+            const apiKey = getActiveApiKey();
+            if (!apiKey) {
+                throw new Error("請輸入有效的 Google Gemini API 金鑰以生成形象照。請檢查設定中的金鑰是否正確。");
+            }
+
+            for (let attempt = 1; attempt <= totalAttempts; attempt++) {
+                try {
+                    const apiUrl = `${CONSTANTS.API_URLS.GENERATE_IMAGE}?key=${apiKey}`;
+                    
+                    const result = await fetchWithRetry(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const base64Data = result?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+
+                    if (base64Data) {
+                        return `data:image/png;base64,${base64Data}`;
+                    }
+
+                    lastError = new Error("API 未返回圖片資料。");
+                    console.warn(`第 ${attempt}/${totalAttempts} 次嘗試: ${lastError.message}`);
+
+                } catch (error) {
+                    lastError = error;
+                    console.error(`第 ${attempt}/${totalAttempts} 次嘗試失敗:`, error);
+                }
+
+                if (attempt < totalAttempts) {
+                    const delay = 2500 * Math.pow(2, attempt - 1);
+                    console.log(`等待 ${delay / 1000} 秒後進行下一次嘗試...`);
+                    await new Promise(res => setTimeout(res, delay));
+                }
+            }
+
+            throw new Error(`圖片生成在 ${totalAttempts} 次嘗試後失敗。最後錯誤: ${lastError?.message || '未知錯誤'}`);
+        };
+
+        // Simplified getModelInstruction for generating professional profile pictures
+        const getModelInstruction = (posePrompt) => { 
+            let instruction = `The highest priority is to maintain the exact likeness, facial features, hair, and perceived identity of the person in the provided reference photo. Do not alter their age or gender.
+Generate a high-quality, professional-looking profile picture of the person from the reference image, depicting them in a realistic and confident manner.
+The image should have a 1:1 aspect ratio.
+The person should be performing the action or expressing the pose described: "${posePrompt.base}".
+Ensure professional or smart casual attire suitable for a business context.
+Use appropriate and flattering professional lighting.
+The background should be a subtle, professional setting (e.g., blurred office, clean studio backdrop, modern corporate environment).
+The final image should be a high-quality PNG.`;
+
+            return instruction;
+        };
+
+        // NEW: Custom Loading Spinner React Component
+        const LoadingSpinner = ({ size = 'fa-icon-standard', className = '' }) => {
+            return (
+                <div className={`loading-spinner ${size} ${className}`} role="status" aria-label="Loading">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            );
+        };
+
+        // Modal Close Button Component (using Font Awesome)
+        const ModalCloseButton = ({ onClick, disabled }) => (
+            <button onClick={onClick} disabled={disabled} className="modal-close" aria-label="關閉模態視窗">
+                <i className="fa-solid fa-xmark fa-2xl"></i>
+            </button>
+        );
+
+        // Tooltip Component
+        const Tooltip = ({ children, text }) => (
+            <div className="tooltip relative group">
+                {children}
+                <span className="tooltip-text absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-text-dark-primary text-bg-light-primary text-xs rounded py-1 px-2 whitespace-nowrap z-10">
+                    {text}
+                </span>
+                <div className="tooltip-text::after absolute top-full left-1/2 transform -translate-x-1/2 border-width-5 border-style-solid border-color-text-dark-primary-transparent-transparent-transparent"></div>
+            </div>
+        );
+
+        // --- React Components (Styling changed to new theme classes) ---
+
+        const Button = ({ children, onClick, disabled, primary = false, className = '', ariaLabel }) => {
+            const baseClass = "button"; 
+            const themeClass = primary 
+                ? "button-primary" 
+                : "button-secondary"; 
+            
+            return (
+                <button
+                    onClick={onClick}
+                    disabled={disabled}
+                    className={`${baseClass} ${themeClass} ${className}`}
+                    aria-label={ariaLabel}
+                    aria-disabled={disabled || undefined}
+                >
+                    {children}
+                </button>
+            );
+        };
+
+        const ProfilePictureDisplay = ({ poseName, imageUrl, onDownload, onRegenerate, status }) => {
+            let statusIcon;
+            let cardClass = "profile-card-base";
+            if (status === 'success') {
+                statusIcon = <i className="fa-solid fa-circle-check fa-icon-standard text-accent-green-vibrant"></i>;
+            } else if (status === 'failed') {
+                statusIcon = <i className="fa-solid fa-circle-xmark fa-icon-standard text-error-light"></i>;
+                cardClass += " border-error-light/50";
+            }
+
+            return (
+                <div className={`relative group ${cardClass}`}>
+                    <div className="profile-card-image-wrapper">
+                        <img src={imageUrl} alt={`您的形象照 - ${poseName}`} className="w-full h-full object-cover" />
+                    </div>
+                    <p className="profile-card-pose-name">{poseName}</p>
+                    
+                    <div className="profile-actions">
+                        {status === 'success' && (
+                            <>
+                                <Tooltip text="重新生成形象照">
+                                    <button
+                                        onClick={onRegenerate}
+                                        aria-label="重新生成形象照"
+                                    >
+                                        <i className="fa-solid fa-arrow-rotate-right fa-icon-medium"></i>
+                                    </button>
+                                </Tooltip>
+                                <Tooltip text="下載形象照">
+                                    <button
+                                        onClick={() => onDownload(imageUrl, poseName)}
+                                        aria-label="下載形象照"
+                                    >
+                                        <i className="fa-solid fa-download fa-icon-medium"></i>
+                                    </button>
+                                </Tooltip>
+                            </>
+                        )}
+                        {status === 'failed' && (
+                            <Tooltip text="重試生成">
+                                <button
+                                    onClick={onRegenerate}
+                                    aria-label="重新生成形象照"
+                                    className="bg-error-light hover:bg-error-light/80"
+                                >
+                                    <i className="fa-solid fa-arrow-rotate-right fa-icon-medium text-white"></i>
+                                </button>
+                            </Tooltip>
+                        )}
+                    </div>
+                    <div className="absolute top-3 left-3 z-10">
+                        {statusIcon}
+                    </div>
+                </div>
+            );
+        };
+
+        const SkeletonLoader = ({ className = "h-5 w-1/2" }) => (
+            <div className={`animate-pulse bg-border-soft rounded-md ${className}`}></div>
+        );
+
+        const LoadingProfileCard = ({ poseName, status }) => {
+            return (
+                <div className="profile-card-base">
+                    <div className="profile-card-image-wrapper">
+                        <LoadingSpinner className="fa-icon-large" />
+                    </div>
+                    <div className="mt-3 flex justify-center">
+                        <SkeletonLoader />
+                    </div>
+                    <p className="text-center text-sm text-text-muted-light">{status === 'generating' ? '生成中...' : '準備中...'}</p>
+                </div>
+            );
+        };
+
+        const ErrorProfileCard = ({ poseName, onRegenerate }) => {
+            return (
+                <div className="profile-card-base border-error-light/50">
+                    <div className="profile-card-image-wrapper flex flex-col items-center justify-center p-4 border-2 border-dashed error-card-border">
+                        <p className="font-medium mb-4 error-card-text">生成失敗</p>
+                        <Button onClick={onRegenerate} primary>
+                            <i className="fa-solid fa-arrow-rotate-right fa-icon-medium"></i>
+                            重試
+                        </Button>
+                    </div>
+                    <p className="profile-card-pose-name">{poseName}</p>
+                    <div className="absolute top-3 left-3 z-10">
+                        <i className="fa-solid fa-circle-xmark fa-icon-standard text-error-light"></i>
+                    </div>
+                </div>
+            );
+        };
+
+
+        const ErrorNotification = ({ message, onDismiss }) => {
+            if (!message) return null;
+            return (
+                <div className="fixed top-5 left-1/2 z-50 w-full max-w-md p-4 bg-panel-light border border-border-highlight text-dark-primary rounded-lg shadow-soft flex items-center justify-between animate-fade-in-down" style={{ transform: 'translateX(-50%)' }}>
+                    <span>{message}</span>
+                    <button onClick={onDismiss} className="p-1 rounded-full hover:bg-bg-sub-panel-light transition-colors ml-4">
+                        <i className="fa-solid fa-xmark fa-icon-medium text-text-muted-light"></i>
+                    </button>
+                </div>
+            );
+        };
+
+        const CameraModal = ({ isOpen, onClose, onCapture }) => {
+            const videoRef = useRef(null);
+            const streamRef = useRef(null);
+            const [cameraError, setCameraError] = useState(null);
+
+            const stopCamera = useCallback(() => {
+                if (streamRef.current) {
+                    streamRef.current.getTracks().forEach(track => track.stop());
+                    streamRef.current = null;
+                }
+                if (videoRef.current) {
+                    videoRef.current.srcObject = null;
+                }
+            }, []);
+
+            const startCamera = useCallback(async () => {
+                if (videoRef.current) {
+                    setCameraError(null);
+                    try {
+                        stopCamera();
+                        const stream = await navigator.mediaDevices.getUserMedia({
+                            video: { width: { ideal: 1024 }, height: { ideal: 1024 }, facingMode: 'user' }
+                        });
+                        videoRef.current.srcObject = stream;
+                        streamRef.current = stream;
+                    } catch (err) {
+                        console.error("存取相機時發生錯誤:", err);
+                        setCameraError("相機存取被拒絕。請在您的瀏覽器設定中允許相機存取。");
+                    }
+                }
+            }, [stopCamera]);
+
+            useEffect(() => {
+                if (isOpen) {
+                    startCamera();
+                } else {
+                    stopCamera();
+                }
+                return () => {
+                    stopCamera();
+                };
+            }, [isOpen, startCamera, stopCamera]);
+
+            const handleCapture = () => {
+                if (videoRef.current) {
+                    const video = videoRef.current;
+                    const canvas = document.createElement('canvas'); // Create temp canvas for capture
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const context = canvas.getContext('2d');
+                    context.scale(-1, 1); // Flip horizontally for selfie mode
+                    context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+                    const dataUrl = canvas.toDataURL('image/png');
+                    onCapture(dataUrl); // Pass directly to parent
+                    onClose();
+                }
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+                    <div 
+                        className="bg-panel-light rounded-2xl p-6 border border-border-soft shadow-soft w-full max-w-lg text-center relative text-dark-primary" 
+                    >
+                        <h3 className="text-2xl font-semibold mb-4 text-dark-primary flex items-center justify-center gap-2">
+                            <i className="fa-solid fa-camera fa-icon-large"></i>
+                            相機
+                        </h3>
+                        <div className="aspect-square bg-bg-light-primary rounded-lg overflow-hidden relative mb-4 flex items-center justify-center">
+                            {cameraError ? (
+                                <div className="p-4 text-error-light">{cameraError}</div>
+                            ) : (
+                                <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover transform -scale-x-100"></video>
+                            )}
+                        </div>
+
+                        <div className="flex justify-center gap-4">
+                            <button onClick={handleCapture} disabled={!!cameraError} className="w-20 h-20 rounded-full bg-accent-blue-main border-4 border-accent-blue-main focus:outline-none focus:ring-4 focus:ring-accent-green-vibrant transition-all hover:border-accent-green-vibrant disabled:opacity-50 disabled:cursor-not-allowed" aria-label="拍攝照片"></button>
+                        </div>
+                        
+                        <ModalCloseButton onClick={onClose} />
+                    </div>
+                </div>
+            );
+        };
+
+        const ApiKeyTutorialModal = ({ isOpen, onClose }) => {
+            if (!isOpen) return null;
+            return (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3 className="flex items-center gap-2">
+                            <i className="fa-solid fa-gear fa-icon-large"></i>
+                            如何取得免費的 Google Gemini API 金鑰？
+                        </h3>
+                        <p>按照以下簡單步驟，即可取得您自己的免費金鑰，享受更穩定、個人化的服務。</p>
+                        <ol className="list-decimal list-inside text-left mb-4">
+                            <li className="mb-2">前往 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio 的 API 金鑰頁面</a>。</li>
+                            <li className="mb-2">使用您的 Google 帳號登入。</li>
+                            <li className="mb-2">點擊頁面上的 <strong>「建立 API 金鑰」(Create API key)</strong> 按鈕。</li>
+                            <li className="mb-2">系統會立即產生一組新的金鑰。點擊金鑰旁邊的複製圖示。</li>
+                            <li>回到本頁面，將複製的金鑰貼到輸入框中即可！</li>
+                        </ol>
+                        <p className="text-sm text-error-light"><strong>提醒：：</strong>請妥善保管您的 API 金鑰，不要與他人分享。</p>
+                        <ModalCloseButton onClick={onClose} />
+                    </div>
+                </div>
+            );
+        };
+
+        // EditPosePromptModal is removed as prompt selection is no longer available
+
+        const App = () => {
+            // Core State
+            const [uploadedImage, setUploadedImage] = useState(null); // The final image used for AI generation
+            const [generatedImages, setGeneratedImages] = useState([]);
+            const [isLoading, setIsLoading] = useState(false);
+            const [error, setError] = useState(null);
+            const fileInputRef = useRef(null);
+            const [isUploading, setIsUploading] = useState(false);
+            const [isCameraOpen, setIsCameraOpen] = useState(false);
+            const resultsRef = useRef(null);
+            
+            // Generate options state (simplified)
+            const [isZipping, setIsZipping] = useState(false);
+            
+            const [apiKey, setApiKey] = useState('');
+            const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+
+            // Cancel generation flag (kept for potential future re-implementation, currently unused as button is removed)
+            const [cancelGeneration, setCancelGeneration] = useState(false);
+
+            // Memoized values
+            const progress = useMemo(() => {
+                return generatedImages.length > 0
+                    ? (generatedImages.filter(img => img.status !== 'pending' && img.status !== 'generating').length / generatedImages.length) * 100
+                    : 0;
+            }, [generatedImages]);
+
+            // Select 3 random poses from the predefined list
+            const posesForGeneration = useMemo(() => {
+                const shuffled = [...PREDEFINED_PROFESSIONAL_POSES].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, CONSTANTS.FIXED_GENERATE_COUNT);
+            }, [generatedImages.length]); // Re-shuffle only when generatedImages count changes (e.g., on start over)
+
+
+            // On component mount: load saved API key
+            useEffect(() => {
+                const savedApiKey = localStorage.getItem('geminiApiKey');
+                if (savedApiKey) {
+                    setApiKey(savedApiKey);
+                }
+            }, []);
+
+            // Handle API key input changes (Debounced and Sanitized)
+            const handleApiKeyChange = useCallback(
+                debounce((newKey) => {
+                    const sanitizedKey = sanitizeApiKey(newKey);
+                    setApiKey(sanitizedKey);
+                    localStorage.setItem('geminiApiKey', sanitizedKey);
+                }, CONSTANTS.DEBOUNCE_DELAY),
+                []
+            );
+
+            const getActiveApiKey = useCallback(() => apiKey.trim(), [apiKey]);
+
+            const regenerateImageAtIndex = async (imageIndex) => {
+                const imageToRegenerate = generatedImages[imageIndex];
+                if (!imageToRegenerate) return;
+            
+                setGeneratedImages(prev => prev.map((img, index) =>
+                    index === imageIndex ? { ...img, status: 'pending' } : img
+                ));
+                setError(null);
+            
+                // Find the original prompt for the image to regenerate
+                const prompt = posesForGeneration.find(p => p.id === imageToRegenerate.id);
+
+                if (!prompt) {
+                    setAppError(setError, "找不到要重新生成的姿勢提示。");
+                    setGeneratedImages(prev => prev.map((img, index) => index === imageIndex ? { ...img, status: 'failed' } : img));
+                    return;
+                }
+
+                if (!getActiveApiKey()) {
+                    setAppError(setError, "請提供您的 Google Gemini API 金鑰來重新生成形象照。");
+                    setGeneratedImages(prev => prev.map((img, index) => prev[index].status = 'failed'));
+                    return;
+                }
+    
+                try {
+                    const imageWithoutPrefix = uploadedImage.split(',')[1];
+                    const modelInstruction = getModelInstruction(prompt);
+                    
+                    const payload = {
+                        contents: [{
+                            parts: [
+                                { text: modelInstruction },
+                                { inlineData: { mimeType: "image/png", data: imageWithoutPrefix } }
+                            ]
+                        }],
+                    };
+
+                    const imageUrl = await generateImageWithRetry(payload, getActiveApiKey);
+
+                    setGeneratedImages(prev => prev.map((img, index) =>
+                        index === imageIndex ? { ...img, status: 'success', imageUrl } : img
+                    ));
+    
+                } catch (err) {
+                    console.error(`為 ${prompt.id} 重新生成失敗:`, err);
+                    setAppError(setError, `哎呀！為 "${prompt.id}" 重新生成失敗。錯誤: ${err.message}`);
+                    setGeneratedImages(prev => prev.map((img, index) =>
+                        index === imageIndex ? { ...img, status: 'failed' } : img
+                    ));
+                }
+            };
+            
+            // Handles file input or drag-drop for initial image processing (with validation)
+            const handleImageFile = async (file) => {
+                if (!file) return;
+
+                const maxSizeMB = CONSTANTS.MAX_IMAGE_SIZE_MB;
+                const maxDimensions = CONSTANTS.MAX_IMAGE_DIMENSIONS;
+
+                if (file.size > maxSizeMB * 1024 * 1024) {
+                    setAppError(setError, `圖片檔案過大，請上傳小於 ${maxSizeMB}MB 的檔案。`);
+                    return;
+                }
+
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                await new Promise((resolve, reject) => {
+                    img.onload = () => {
+                        if (img.width > maxDimensions.width || img.height > maxDimensions.height) {
+                            setAppError(setError, `圖片尺寸過大，請上傳小於 ${maxDimensions.width}x${maxDimensions.height} 的圖片。`);
+                            URL.revokeObjectURL(img.src);
+                            reject();
+                        } else {
+                            resolve();
+                        }
+                    };
+                    img.onerror = reject;
+                });
+
+                setIsUploading(true);
+                setError(null);
+                
+                try {
+                    const base64Image = await toBase64(file);
+                    setUploadedImage(base64Image); // Directly set the uploaded image
+                    setGeneratedImages([]); 
+                    setError(null); 
+                } catch (err) {
+                    console.error("圖片讀取時發生錯誤:", err);
+                    setAppError(setError, "該圖片無法處理。請嘗試其他檔案。");
+                } finally {
+                    setIsUploading(false);
+                }
+            };
+
+            const handleImageUpload = (event) => handleImageFile(event.target.files[0]);
+            
+            // Drag and Drop Handlers
+            const handleDragOver = (e) => {
+                e.preventDefault();
+                e.stopPropagation(); 
+                e.currentTarget.classList.add('drag-over');
+            };
+
+            const handleDragLeave = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.classList.remove('drag-over');
+            };
+
+            const handleDrop = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleImageFile(file);
+                } else {
+                    setAppError(setError, "請拖曳圖片檔案 (JPG/PNG)。");
+                }
+            };
+
+            // For Camera capture 
+            const handleCaptureConfirm = (imageDataUrl) => {
+                setUploadedImage(imageDataUrl); // Directly set the captured image
+                setGeneratedImages([]);
+                setError(null);
+            };
+
+            const handleGenerateClick = async () => {
+                if (!uploadedImage) {
+                    setAppError(setError, "請先上傳一張照片！");
+                    return;
+                }
+                
+                if (!getActiveApiKey()) {
+                    setAppError(setError, "請提供您的 Google Gemini API 金鑰來生成形象照。");
+                    return;
+                }
+                
+                setIsLoading(true);
+                setError(null);
+                setGeneratedImages([]);
+                setCancelGeneration(false); // Reset cancel flag
+                
+                setTimeout(() => {
+                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+
+                const imageWithoutPrefix = uploadedImage.split(',')[1];
+                const initialPlaceholders = posesForGeneration.map(p => ({
+                    id: p.id,
+                    status: 'pending', 
+                    imageUrl: null,
+                }));
+                setGeneratedImages(initialPlaceholders);
+
+                // Generate images sequentially to manage state updates per pose
+                for (let i = 0; i < posesForGeneration.length; i++) {
+                    if (cancelGeneration) { // Check cancel flag before each generation
+                        setIsLoading(false);
+                        setGeneratedImages([]);
+                        setAppError(setError, "生成已被取消。");
+                        return;
+                    }
+
+                    const p = posesForGeneration[i];
+                    setGeneratedImages(prev => prev.map((img, index) => 
+                        index === i ? { ...img, status: 'generating' } : img 
+                    ));
+
+                    try {
+                        const modelInstruction = getModelInstruction(p);
+                        
+                        const payload = {
+                            contents: [{
+                                parts: [
+                                    { text: modelInstruction },
+                                    { inlineData: { mimeType: "image/png", data: imageWithoutPrefix } }
+                                ]
+                            }],
+                        };
+
+                        const imageUrl = await generateImageWithRetry(payload, getActiveApiKey);
+
+                        setGeneratedImages(prev => prev.map((img, index) => 
+                            index === i ? { ...img, status: 'success', imageUrl } : img
+                        ));
+
+                    } catch (err) {
+                        console.error(`為 ${p.id} 生成圖片在所有重試後失敗:`, err);
+                        setGeneratedImages(prev => prev.map((img, index) =>
+                            index === i ? { ...img, status: 'failed', error: err.message } : img
+                        ));
+                        setAppError(setError, `哎呀！為 "${p.id}" 生成失敗。錯誤: ${err.message}`); 
+                    }
+                    await new Promise(resolve => setTimeout(resolve, CONSTANTS.GENERATION_DELAY)); // Small delay for visual effect
+                }
+
+                setIsLoading(false);
+            };
+
+            const triggerDownload = (href, fileName) => {
+                const link = document.createElement('a');
+                link.href = href;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+            
+            const handleDownloadRequest = (imageUrl, poseName) => {
+                const fileName = `profile-picture-${poseName.toLowerCase().replace(/\s+/g, '-')}.png`;
+                triggerDownload(imageUrl, fileName);
+            };
+
+            const handleDownloadAllAsZip = async () => {
+                if (isZipping || typeof window.JSZip === 'undefined') {
+                    if (typeof window.JSZip === 'undefined') {
+                         setAppError(setError, "壓縮程式庫尚未載入，請稍後再試。");
+                    }
+                    return;
+                }
+                
+                setIsZipping(true);
+                setError(null);
+                
+                try {
+                    const zip = new window.JSZip();
+                    const successfulImages = generatedImages.filter(img => img.status === 'success');
+
+                    if (successfulImages.length === 0) {
+                        setAppError(setError, "沒有可以打包的形象照。");
+                        return;
+                    }
+
+                    const imagePromises = successfulImages.map(async (img) => {
+                        const response = await fetch(img.imageUrl);
+                        const blob = await response.blob();
+                        const fileName = `profile-picture-${img.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+                        zip.file(fileName, blob);
+                    });
+
+                    await Promise.all(imagePromises);
+
+                    const content = await zip.generateAsync({ type: "blob" });
+                    
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(content);
+                    link.download = "ai-profile-pack.zip";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+
+                } catch (err) {
+                    console.error("建立壓縮檔時發生錯誤:", err);
+                    setAppError(setError, "建立壓縮檔失敗，請再試一次。");
+                } finally {
+                    setIsZipping(false);
+                }
+            };
+            
+            const handleStartOver = () => {
+                setGeneratedImages([]);
+                setUploadedImage(null);
+                setError(null);
+                setCancelGeneration(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Check if any AI-related process is active to disable general buttons
+            const isAnyAiProcessActive = isLoading || isUploading || isCameraOpen;
+
+            return (
+                <>
+                    <CameraModal
+                        isOpen={isCameraOpen}
+                        onClose={() => setIsCameraOpen(false)}
+                        onCapture={handleCaptureConfirm}
+                    />
+                    <ApiKeyTutorialModal 
+                        isOpen={isApiKeyModalOpen} 
+                        onClose={() => setIsApiKeyModalOpen(false)} 
+                    />
+                    {/* EditPosePromptModal is removed */}
+
+                    <div className="container min-h-screen flex flex-col">
+                        <ErrorNotification message={error} onDismiss={() => setError(null)} />
+                        
+                        <header>
+                            <h1 className="font-bold">
+                                專業形象照神生成系統
+                            </h1>
+                            <p>輕鬆生成各種專業風格的形象照！</p>
+                        </header>
+
+                        <main className="flex-grow">
+                            {/* NEW: Initial Setup Grid for API Key and Image Upload */}
+                            <div className="initial-setup-grid">
+                                {/* API Key Input Section (Left Column) */}
+                                <div className="console-panel">
+                                    <h2 className="console-section-header">
+                                        <i className="fa-solid fa-gear fa-icon-large text-accent-blue-main"></i>
+                                        前置設定：API 金鑰
+                                    </h2>
+                                    <div className="info-box">
+                                        <p>為使用 AI 形象照產生功能，請先前往 Google AI Studio 申請並貼上您的免費 API 金鑰。此金鑰將僅儲存在您的瀏覽器中，不會上傳至任何伺服器。</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <div className="api-key-label-wrapper">
+                                            <label htmlFor="user-api-key">您的 Google Gemini API 金鑰 (必填)</label>
+                                            <span className="api-tutorial-link" onClick={() => setIsApiKeyModalOpen(true)}>(如何取得？)</span>
+                                        </div>
+                                        <input
+                                            type="password"
+                                            id="user-api-key"
+                                            placeholder="請貼上您從 Google AI Studio 取得的 API 金鑰"
+                                            value={apiKey}
+                                            onChange={(e) => handleApiKeyChange(e.target.value)}
+                                            autoComplete="off"
+                                            disabled={isAnyAiProcessActive}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Image Upload Section (Right Column) */}
+                                <div className="console-panel">
+                                    <h2 className="console-section-header">
+                                        <i className="fa-solid fa-camera fa-icon-large text-accent-blue-main"></i>
+                                        上傳或拍攝您的照片
+                                    </h2>
+                                    <div className="console-sub-panel !bg-transparent !shadow-none !border-none !p-0">
+                                        <div 
+                                            className={`image-upload-area ${uploadedImage ? 'has-image' : ''} ${isUploading ? 'uploading-animation' : ''}`}
+                                            onClick={() => !uploadedImage && fileInputRef.current && fileInputRef.current.click()}
+                                            onDragOver={handleDragOver}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={handleDrop}
+                                        >
+                                            {isUploading ? (
+                                                <div className="flex flex-col items-center">
+                                                    <LoadingSpinner className="fa-icon-xl" />
+                                                    <p className="text-text-muted-light mt-4">讀取中...</p>
+                                                </div>
+                                            ) : uploadedImage ? (
+                                                <img src={uploadedImage} alt="上傳預覽" className="w-full h-full" />
+                                            ) : (
+                                                <div className="upload-placeholder flex flex-col items-center p-6 text-center">
+                                                    <i className="fa-solid fa-cloud-arrow-up fa-xxl icon text-accent-blue-main"></i>
+                                                    <p className="mt-2 text-lg text-dark-primary">點擊或拖曳檔案以上傳 (支援 JPG/PNG)</p>
+                                                    <p className="mt-2 text-sm">或</p>
+                                                    <Button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation(); 
+                                                            setIsCameraOpen(true);
+                                                        }}
+                                                        className="mt-4 button-secondary"
+                                                        disabled={isAnyAiProcessActive}
+                                                        ariaLabel="使用相機拍攝照片"
+                                                    >
+                                                        <i className="fa-solid fa-camera fa-icon-medium"></i>
+                                                        <span>使用相機</span>
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {uploadedImage && !isUploading && (
+                                            <div className="upload-buttons">
+                                                <Button onClick={() => fileInputRef.current && fileInputRef.current.click()} className="button-secondary" disabled={isAnyAiProcessActive} ariaLabel="更換照片">
+                                                    <i className="fa-solid fa-cloud-arrow-up fa-icon-medium"></i>
+                                                    更換照片
+                                                </Button>
+                                                <Button onClick={() => setIsCameraOpen(true)} className="button-secondary" disabled={isAnyAiProcessActive} ariaLabel="重新拍攝照片">
+                                                    <i className="fa-solid fa-camera fa-icon-medium"></i>
+                                                    <span>重新拍攝</span>
+                                                </Button>
+                                            </div>
+                                        )}
+                                        <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/png, image/jpeg" className="hidden" />
+                                    </div>
+                                </div>
+                            </div> {/* End of Initial Setup Grid */}
+
+                            {/* Global Generate Button (Moved here) */}
+                            <div className="generate-button-area">
+                                <Button
+                                    onClick={handleGenerateClick}
+                                    disabled={!uploadedImage || isAnyAiProcessActive || !getActiveApiKey()}
+                                    primary
+                                    ariaLabel="專業形象照神生成"
+                                >
+                                    <div className="flex items-center justify-center gap-3">
+                                        {isLoading ? (
+                                            <>
+                                                <LoadingSpinner className="fa-icon-standard" />
+                                                <span>{`生成中... (${Math.round(progress)}%)`}</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="fa-solid fa-sparkles fa-icon-standard"></i>
+                                                <span>專業形象照神生成</span>
+                                            </>
+                                        )}
+                                    </div>
+                                </Button>
+                            </div>
+
+
+                            <div ref={resultsRef} className="results-section">
+                                {(isLoading || generatedImages.length > 0) && (
+                                    <>
+                                        <h2 className="console-section-header">
+                                            <i className="fa-solid fa-images fa-icon-large text-accent-blue-main"></i>
+                                            您的專業形象照
+                                        </h2>
+
+                                        {isLoading && (
+                                            <div className="w-full max-w-lg mx-auto mb-10 text-center">
+                                                <div className="results-loader-progress">
+                                                    <div
+                                                        className="results-loader-bar transition-all duration-500 ease-out"
+                                                        style={{ width: `${progress}%` }}
+                                                    />
+                                                </div>
+                                                <p className="text-text-muted-light mt-4 text-sm">生成形象照時請保持視窗開啟</p>
+                                            </div>
+                                        )}
+                                        <div className="results-grid">
+                                            {generatedImages.map((img, index) => {
+                                                switch (img.status) {
+                                                    case 'success':
+                                                        return <ProfilePictureDisplay
+                                                            key={`${img.id}-${index}-success`}
+                                                            poseName={img.id}
+                                                            imageUrl={img.imageUrl}
+                                                            onDownload={handleDownloadRequest}
+                                                            onRegenerate={() => regenerateImageAtIndex(index)}
+                                                            status={img.status}
+                                                        />;
+                                                    case 'failed':
+                                                        return <ErrorProfileCard
+                                                            key={`${img.id}-${index}-failed`}
+                                                            poseName={img.id}
+                                                            onRegenerate={() => regenerateImageAtIndex(index)}
+                                                            status={img.status}
+                                                        />;
+                                                    case 'pending':
+                                                    case 'generating':
+                                                    default:
+                                                        return <LoadingProfileCard 
+                                                            key={`${img.id}-${index}-pending`} 
+                                                            poseName={img.id} 
+                                                            status={img.status}
+                                                        />;
+                                                }
+                                            })}
+                                        </div>
+                                    </>
+                                )}
+
+                                {!isLoading && generatedImages.length > 0 && (
+                                    <div className="text-center mt-20 flex flex-col sm:flex-row items-center justify-center gap-6">
+                                        <Button onClick={handleStartOver} disabled={isAnyAiProcessActive} ariaLabel="重新開始">
+                                            <i className="fa-solid fa-arrow-rotate-right fa-icon-medium"></i>
+                                            重新開始
+                                        </Button>
+                                        <Button onClick={handleDownloadAllAsZip} primary disabled={isZipping || isAnyAiProcessActive} ariaLabel="打包下載所有形象照">
+                                            <div className="flex items-center gap-2">
+                                            {isZipping ? (
+                                                <>
+                                                <LoadingSpinner className="fa-icon-medium" />
+                                                <span>打包中...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <i className="fa-solid fa-file-zipper fa-icon-standard"></i>
+                                                    <span>打包下載</span>
+                                                </>
+                                            )}
+                                            </div>
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
+                        </main>
+                        
+                        <footer className="mt-auto"> 
+                            <p>Copyright © Liyuchiutiger Gongminshen</p>
+                        </footer>
+                    </div>
+                </>
+            );
+        };
+
+        // Render the App component into the root div
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+    </script>
+</body>
+</html>
