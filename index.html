@@ -24,7 +24,7 @@
             --icon-size-large: 2rem;     /* 32px */
         }
         
-        /* --- NEW: BRIGHT, MINIMALIST, STREAMLINED THEME COLOR PALETTE & BASE STYLES --- */
+        /* --- BRIGHT, MINIMALIST, STREAMLINED THEME COLOR PALETTE & BASE STYLES --- */
         :root {
             --bg-light-primary: #FFFFFF; /* Pure white for main background */
             --bg-panel-light: #F8FAFC;   /* Very light gray for main panels, subtle contrast */
@@ -69,8 +69,7 @@
         .fa-icon-xxl { font-size: 3.5rem; }    /* For even larger placeholder icon */
 
 
-        /* NEW: Grid pattern for profile picture previews, with a cleaner look */
-        /* REMOVED bg-grid-pattern from image wrapper for profile pictures, but keeping the class for other uses if needed */
+        /* Grid pattern for profile picture previews, with a cleaner look */
         .bg-grid-pattern {
             background-color: var(--bg-sub-panel-light);
             background-image: linear-gradient(var(--border-soft) 1px, transparent 1px), 
@@ -124,7 +123,7 @@
         #mascot:hover {
             transform: scale(1.15); 
             animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-            filter: drop_shadow(0 0 15px var(--accent-blue-main)) drop_shadow(0 0 30px var(--accent-purple-soft)); 
+            filter: drop-shadow(0 0 15px var(--accent-blue-main)) drop-shadow(0 0 30px var(--accent-purple-soft)); 
         }
         @keyframes shake {
             10%, 90% { transform: scale(1.15) translate3d(-1px, 0, 0); }
@@ -140,7 +139,7 @@
             z-index: 1001;
         }
 
-        /* --- Global Component Adjustments (NEW LAYOUT) --- */
+        /* --- Global Component Adjustments --- */
         .container { 
             max-width: 1500px; 
             margin: 0 auto; 
@@ -163,12 +162,12 @@
             letter-spacing: 0.03em;
         }
 
-        /* NEW: Initial Setup Grid for API Key and Image Upload */
+        /* Initial Setup Grid for API Key and Image Upload */
         .initial-setup-grid {
             display: grid;
             grid-template-columns: 1fr; /* Default to single column on small screens */
             gap: 40px;
-            margin-bottom: 50px; /* Reduced margin as options panel is removed */
+            margin-bottom: 50px; 
         }
         @media (min-width: 1024px) { /* Tailwind 'lg' breakpoint */
             .initial-setup-grid {
@@ -176,7 +175,7 @@
             }
         }
 
-        /* NEW: Main Console Panel */
+        /* Main Console Panel */
         .console-panel {
             background-color: var(--bg-panel-light);
             backdrop-filter: blur(5px); /* Lighter blur */
@@ -223,19 +222,16 @@
             border-bottom: 1px solid var(--border-soft); 
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Very subtle */
             letter-spacing: 0.04em;
-            display: flex; /* Added for icon alignment */
-            align-items: center; /* Added for icon alignment */
-            gap: 12px; /* Added for icon spacing */
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
         }
         /* Style for icons in console-section-header */
         .console-section-header .fa-solid {
-            color: var(--accent-blue-main); /* Icon color */
+            color: var(--accent-blue-main); 
         }
         
-        /* console-grid-3col and related styles are removed */
-
-
-        /* NEW: Unified Sub-Panel Styling */
+        /* Unified Sub-Panel Styling */
         .console-sub-panel {
             background-color: var(--bg-sub-panel-light);
             border-radius: 20px; 
@@ -249,13 +245,13 @@
             margin-bottom: 20px;
             font-size: 1.6rem; 
             text-shadow: none;
-            display: flex; /* Added for icon alignment */
-            align-items: center; /* Added for icon alignment */
-            gap: 10px; /* Added for icon spacing */
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
         }
          /* Style for icons in console-sub-panel h3 */
         .console-sub-panel h3 .fa-solid {
-            color: var(--accent-blue-main); /* Icon color */
+            color: var(--accent-blue-main); 
         }
         .console-sub-panel .info-text { 
             color: var(--text-muted-light);
@@ -287,13 +283,13 @@
             border-color: var(--accent-blue-light); 
             box-shadow: 0 0 10px rgba(52, 152, 219, 0.1); 
         }
-        .image-upload-area img { object-fit: cover; } /* Changed to cover for profile pictures */
+        .image-upload-area img { object-fit: cover; } 
         .upload-placeholder { color: var(--text-muted-light); }
         .upload-placeholder .fa-solid { font-size: 3.5rem; margin-bottom: 20px; color: var(--accent-blue-main); }
         .upload-buttons { margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; } 
 
 
-        /* Inputs and Textareas (New Styling) */
+        /* Inputs and Textareas */
         input[type="password"], textarea, select, input[type="number"] {
             width: 100%; 
             padding: 14px 18px; 
@@ -323,7 +319,7 @@
         textarea { resize: vertical; min-height: 90px; }
 
 
-        /* Button Styling Overrides (NEW) */
+        /* Button Styling Overrides */
         .button {
             padding: 14px 30px; 
             border-radius: 12px; 
@@ -388,7 +384,7 @@
         }
         /* Explicitly change Font Awesome icon color on hover for secondary button */
         .button-secondary:hover:not(:disabled) .fa-solid {
-            color: var(--bg-light-primary); /* Ensure icon also turns white */
+            color: var(--bg-light-primary); 
         }
         .button:disabled {
             background: var(--bg-sub-panel-light);
@@ -407,100 +403,11 @@
         }
         .button-icon-only .fa-solid { font-size: 1.25rem; } /* fa-icon-medium */
 
-        /* Pose Count Buttons and Style Buttons - Removed these styles as the features are removed */
-        /* .pose-count-buttons, .style-buttons-container { 
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px; 
-            margin-bottom: 15px;
-            justify-content: flex-start; 
-        }
-        .pose-count-button, .style-button { 
-            padding: 9px 18px;
-            font-size: 0.95rem;
-            min-width: 70px;
-            background: var(--bg-light-primary); 
-            border: 1px solid var(--border-soft);
-            color: var(--text-dark-primary); 
-            box-shadow: var(--shadow-inset-light);
-            border-radius: 25px; 
-        }
-        .pose-count-button.selected, .style-button.selected {
-            background-color: var(--accent-blue-main);
-            border-color: var(--accent-blue-main);
-            color: var(--bg-light-primary);
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
-            transform: translateY(-2px);
-        }
-        .pose-count-button.selected::before, .style-button.selected::before {
-            opacity: 0; 
-        } */
-
-
-        /* Pose selection grid - Removed these styles as the features are removed */
-        /* .pose-grid { 
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); 
-            gap: 12px; 
-            margin-top: 20px;
-        }
-        .pose-label { 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border-soft);
-            background-color: var(--bg-light-primary);
-            color: var(--text-dark-primary);
-            cursor: pointer;
-            transition: all 0.3s ease-out;
-            font-weight: 500;
-            text-transform: capitalize; 
-            position: relative;
-            font-size: 0.9rem;
-            box-shadow: var(--shadow-subtle);
-        }
-        .pose-label .edit-prompt-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: none;
-            border: none;
-            color: var(--text-muted-light);
-            font-size: 0.9em;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.2s;
-            padding: 5px; 
-        }
-        .pose-label:hover .edit-prompt-btn {
-            opacity: 1;
-        }
-        .pose-label .edit-prompt-btn:hover {
-            color: var(--accent-blue-main);
-        }
-
-
-        .pose-label:hover:not(.selected) {
-            border-color: var(--accent-blue-main);
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.1);
-            color: var(--accent-blue-main);
-        }
-        .pose-label.selected {
-            background-color: var(--accent-blue-main);
-            border-color: var(--accent-blue-main);
-            color: var(--bg-light-primary);
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
-        }
-        .pose-label input[type="checkbox"] { display: none; } */
-
-
         /* --- Global Generate Button --- */
         .generate-button-area {
             text-align: center;
             margin-top: 50px; 
-            margin-bottom: 90px; /* Added margin-bottom to separate from results */
+            margin-bottom: 90px; 
         }
         .generate-button-area .button {
             width: 70%; 
@@ -540,7 +447,7 @@
         }
 
 
-        /* Profile Picture Display Cards (New Styling - Renamed from sticker-card-base) */
+        /* Profile Picture Display Cards */
         .profile-card-base { 
             padding: 25px; 
             background-color: var(--bg-sub-panel-light);
@@ -556,9 +463,9 @@
             box-shadow: var(--shadow-soft);
             border-color: var(--accent-blue-main);
         }
-        .profile-card-image-wrapper { /* Renamed from sticker-card-image-wrapper */
+        .profile-card-image-wrapper { 
             aspect-ratio: 1 / 1;
-            background-color: var(--bg-light-primary); /* Clean white background for profile pictures */
+            background-color: var(--bg-light-primary); 
             border-radius: 12px;
             overflow: hidden;
             display: flex;
@@ -566,8 +473,8 @@
             justify-content: center;
             border: 1px solid var(--border-soft);
         }
-        .profile-card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; } /* Changed to cover */
-        .profile-card-pose-name { /* Renamed from sticker-card-emotion */
+        .profile-card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; } 
+        .profile-card-pose-name { 
             text-align: center; 
             margin-top: 20px; 
             font-size: 1.2rem; 
@@ -575,7 +482,7 @@
             color: var(--text-dark-primary); 
             text-shadow: none;
         }
-        .profile-actions { /* Renamed from sticker-actions */
+        .profile-actions { 
             position: absolute;
             top: 15px;
             right: 15px;
@@ -650,7 +557,7 @@
             height: 70%;
             object-fit: contain;
             /* Keep original mascot glow colors for 'magic' feel */
-            filter: drop_shadow(0 0 6px var(--accent-blue-main)) drop_shadow(0 0 12px var(--accent-purple-soft));
+            filter: drop-shadow(0 0 6px var(--accent-blue-main)) drop-shadow(0 0 12px var(--accent-purple-soft));
         }
 
         .error-card-border {
@@ -660,7 +567,7 @@
             color: var(--error-light);
         }
 
-        /* NEW: Custom upload loading animation */
+        /* Custom upload loading animation */
         @keyframes upload-glow {
             0% { box-shadow: 0 0 6px var(--accent-blue-main), var(--shadow-inset-light); }
             50% { box-shadow: 0 0 15px rgba(52, 152, 219, 0.2), inset 0 0 10px rgba(52, 152, 219, 0.1); }
@@ -670,20 +577,12 @@
             animation: upload-glow 1.8s infinite ease-in-out;
         }
 
-        /* NEW: AI thinking animation (for prompt generation) */
-        /* .ai-thinking-animation .fa-solid { // This animation is for prompt generation, which is removed
-            animation: ai-thinking 1.5s infinite ease-in-out;
-            color: var(--accent-purple-soft); 
-        } */
-
-
         /* Footer */
         footer { 
             text-align: center; 
             padding: 40px 0; 
             font-size: 0.9rem; 
             color: var(--text-muted-light); 
-            /* REMOVED: border-top: 1px solid var(--border-soft); */
             margin-top: 100px;
         }
 
@@ -714,7 +613,6 @@
         @media (max-width: 1279px) { /* Tablets */
             header h1 { font-size: 4rem; }
             header p { font-size: 1.1rem; }
-            /* .api-key-section { margin-bottom: 40px; } */ /* Controlled by initial-setup-grid gap */
             .initial-setup-grid { margin-bottom: 40px; }
             .console-panel { padding: 35px; gap: 35px; border-radius: 25px; }
             .console-section-header { font-size: 1.8rem; margin-bottom: 20px; padding-bottom: 12px; gap: 10px;}
@@ -724,7 +622,6 @@
             .image-upload-area { height: 320px; border-width: 2px; border-radius: 15px; }
             .upload-buttons { gap: 12px; margin-top: 20px; }
             .button { padding: 12px 22px; gap: 10px; font-size: 0.95rem; border-radius: 10px; border-width: 1px; }
-            /* .pose-grid { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; } */ /* Removed */
             .generate-button-area .button { font-size: 1.4rem; padding: 16px 0; }
             .results-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
             .profile-card-base { padding: 20px; border-radius: 15px; }
@@ -742,7 +639,6 @@
             header h1 { font-size: 3rem; letter-spacing: -0.04em; }
             header p { font-size: 0.9rem; margin-top: 10px; }
             .container { padding: 20px 15px 50px; }
-            /* .api-key-section { margin-bottom: 30px; } */ /* Controlled by initial-setup-grid gap */
             .initial-setup-grid { margin-bottom: 30px; }
             .console-panel { padding: 20px; gap: 25px; margin-bottom: 50px; border-radius: 20px;}
             .console-section-header { font-size: 1.5rem; margin-bottom: 15px; padding-bottom: 8px; gap: 8px; }
@@ -754,11 +650,6 @@
             .upload-buttons { flex-direction: column; gap: 10px; margin-top: 15px; }
             .button { padding: 10px 18px; font-size: 0.85rem; gap: 8px; border-radius: 8px; border-width: 1px; }
             input[type="password"], textarea, select, input[type="number"] { padding: 10px 12px; font-size: 0.85rem; border-radius: 8px;}
-            /* .style-buttons-container { gap: 6px; margin-top: 12px; justify-content: center; } */ /* Removed */
-            /* .pose-count-button, .style-button { padding: 7px 10px; font-size: 0.75rem; border-radius: 18px; } */ /* Removed */
-            /* .pose-grid { grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin-top: 15px; } */ /* Removed */
-            /* .pose-label { padding: 8px; font-size: 0.7rem; border-radius: 6px; } */ /* Removed */
-            /* .pose-label .edit-prompt-btn { top: 3px; right: 3px; font-size: 0.8em; padding: 3px; } */ /* Removed */
             .generate-button-area .button { font-size: 1.2rem; padding: 14px 0; border-radius: 10px; }
             .results-section { margin-top: 70px; }
             .results-grid { gap: 12px; margin-top: 30px; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));}
@@ -773,7 +664,7 @@
             #mascot { width: clamp(70px, 16vw, 100px); bottom: 15px; left: 15px; }
         }
 
-        /* NEW: Custom Loading Spinner CSS */
+        /* Custom Loading Spinner CSS */
         @keyframes spin-circle {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -843,19 +734,18 @@
         audioManager.init();
 
         function createParticles(x, y) {
-            const particleCount = 10; // Reduced for performance
-            // Updated colors to match the new theme, blending the magic feel
+            const particleCount = 10; 
             const colors = ['var(--accent-blue-main)', 'var(--accent-blue-light)', 'var(--accent-purple-soft)', 'var(--accent-green-vibrant)']; 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 document.body.appendChild(particle);
-                const size = Math.random() * 8 + 4; // Slightly smaller
+                const size = Math.random() * 8 + 4; 
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 60 + 40; // Slightly shorter distance
+                const distance = Math.random() * 60 + 40; 
                 const endX = Math.cos(angle) * distance;
                 const endY = Math.sin(angle) * distance;
                 particle.style.left = `${x - size / 2}px`;
@@ -878,20 +768,19 @@
     </script>
 
     <script type="text/babel">
-        // Destructure React hooks
+        // Destructure React hooks for convenience
         const { useState, useRef, useEffect, useCallback, useMemo } = React;
 
         // --- Constants ---
         const CONSTANTS = {
             API_URLS: {
-                GENERATE_CONTENT: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
                 GENERATE_IMAGE: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent',
             },
             MAX_RETRIES: 5,
             INITIAL_BACKOFF: 1000,
-            FIXED_GENERATE_COUNT: 3, // Hardcoded to 3
+            FIXED_GENERATE_COUNT: 3, 
             DEBOUNCE_DELAY: 300,
-            GENERATION_DELAY: 500,
+            GENERATION_DELAY: 500, // Small delay between image generations for visual effect
             MAX_IMAGE_SIZE_MB: 5,
             MAX_IMAGE_DIMENSIONS: { width: 2048, height: 2048 },
         };
@@ -909,6 +798,12 @@
         ];
 
         // --- Utility Functions ---
+
+        /**
+         * Converts a File object to a Base64 data URL.
+         * @param {File} file - The file to convert.
+         * @returns {Promise<string>} A promise that resolves with the Base64 data URL.
+         */
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -916,6 +811,12 @@
             reader.onerror = error => reject(error);
         });
 
+        /**
+         * Debounces a function call.
+         * @param {Function} func - The function to debounce.
+         * @param {number} wait - The debounce delay in milliseconds.
+         * @returns {Function} The debounced function.
+         */
         const debounce = (func, wait) => {
             let timeout;
             return (...args) => {
@@ -924,46 +825,72 @@
             };
         };
 
+        /**
+         * Sanitizes an API key by removing non-alphanumeric characters (except hyphen and underscore) and trimming whitespace.
+         * @param {string} key - The API key to sanitize.
+         * @returns {string} The sanitized API key.
+         */
         const sanitizeApiKey = (key) => key.replace(/[^a-zA-Z0-9-_]/g, '').trim();
 
+        /**
+         * Sets an application-wide error message and logs it.
+         * @param {Function} setError - React state setter for the error.
+         * @param {string} message - The error message.
+         */
         const setAppError = (setError, message) => {
             console.error(message);
             setError(message);
         };
 
-        const fetchWithRetry = (url, options, retries = CONSTANTS.MAX_RETRIES, backoff = CONSTANTS.INITIAL_BACKOFF) => {
-            return new Promise((resolve, reject) => {
-                const attempt = async (retryCount, delay) => {
-                    try {
-                        const response = await fetch(url, options);
-                        if (!response.ok) {
-                            const errorData = await response.json().catch(() => ({}));
-                            console.error('API 錯誤:', errorData);
-                            if (response.status === 429 && retryCount > 0) {
-                                console.log(`請求頻率過高。將在 ${delay / 1000} 秒後重試...`);
-                                setTimeout(() => attempt(retryCount - 1, delay * 2), delay);
-                            } else if (response.status === 401) {
-                                reject(new Error(`API 請求失敗，狀態碼 401：未授權。請確認您的 API 金鑰是否有效。`));
-                            }
-                            else {
-                                reject(new Error(`API 請求失敗，狀態碼 ${response.status}: ${errorData.error?.message || '未知錯誤'}`));
-                            }
+        /**
+         * Fetches data with retry logic for transient errors (e.g., 429 Too Many Requests).
+         * @param {string} url - The URL to fetch.
+         * @param {Object} options - Fetch API options.
+         * @param {number} [retries=CONSTANTS.MAX_RETRIES] - Number of retries.
+         * @param {number} [backoff=CONSTANTS.INITIAL_BACKOFF] - Initial backoff delay in milliseconds.
+         * @returns {Promise<Object>} A promise that resolves with the JSON response.
+         */
+        const fetchWithRetry = async (url, options, retries = CONSTANTS.MAX_RETRIES, backoff = CONSTANTS.INITIAL_BACKOFF) => {
+            let lastError;
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('API 錯誤:', errorData);
+
+                        if (response.status === 429 && i < retries - 1) { // Retry for rate limits
+                            console.log(`請求頻率過高。將在 ${backoff / 1000} 秒後重試...`);
+                            await new Promise(res => setTimeout(res, backoff));
+                            backoff *= 2; // Exponential backoff
+                            continue;
+                        } else if (response.status === 401) {
+                            throw new Error(`API 請求失敗，狀態碼 401：未授權。請確認您的 API 金鑰是否有效。`);
                         } else {
-                            resolve(response.json());
-                        }
-                    } catch (error) {
-                        if (retryCount > 0) {
-                            console.log(`請求失敗。將在 ${delay / 1000} 秒後重試...`, error);
-                            setTimeout(() => attempt(retryCount - 1, delay * 2), delay);
-                        } else {
-                            reject(error);
+                            throw new Error(`API 請求失敗，狀態碼 ${response.status}: ${errorData.error?.message || '未知錯誤'}`);
                         }
                     }
-                };
-                attempt(retries, backoff);
-            });
+                    return response.json();
+                } catch (error) {
+                    lastError = error;
+                    console.error(`第 ${i + 1}/${retries} 次嘗試失敗:`, error);
+                    if (i < retries - 1) {
+                        console.log(`等待 ${backoff / 1000} 秒後進行下一次嘗試...`);
+                        await new Promise(res => setTimeout(res, backoff));
+                        backoff *= 2;
+                    }
+                }
+            }
+            throw new Error(`在 ${retries} 次嘗試後失敗。最後錯誤: ${lastError?.message || '未知錯誤'}`);
         };
 
+        /**
+         * Generates an image using the Gemini API with retry logic.
+         * @param {Object} payload - The request payload for the image generation API.
+         * @param {Function} getActiveApiKey - A function to get the current active API key.
+         * @param {number} [totalAttempts=3] - The maximum number of attempts for the image generation.
+         * @returns {Promise<string>} A promise that resolves with the Base64 data URL of the generated image.
+         */
         const generateImageWithRetry = async (payload, getActiveApiKey, totalAttempts = 3) => {
             let lastError;
             const apiKey = getActiveApiKey();
@@ -996,7 +923,7 @@
                 }
 
                 if (attempt < totalAttempts) {
-                    const delay = 2500 * Math.pow(2, attempt - 1);
+                    const delay = 2500 * Math.pow(2, attempt - 1); // Exponential backoff for attempts
                     console.log(`等待 ${delay / 1000} 秒後進行下一次嘗試...`);
                     await new Promise(res => setTimeout(res, delay));
                 }
@@ -1005,9 +932,13 @@
             throw new Error(`圖片生成在 ${totalAttempts} 次嘗試後失敗。最後錯誤: ${lastError?.message || '未知錯誤'}`);
         };
 
-        // Simplified getModelInstruction for generating professional profile pictures
+        /**
+         * Generates the model instruction for a professional profile picture.
+         * @param {Object} posePrompt - The selected pose prompt object.
+         * @returns {string} The detailed instruction string for the AI model.
+         */
         const getModelInstruction = (posePrompt) => { 
-            let instruction = `The highest priority is to maintain the exact likeness, facial features, hair, and perceived identity of the person in the provided reference photo. Do not alter their age or gender.
+            return `The highest priority is to maintain the exact likeness, facial features, hair, and perceived identity of the person in the provided reference photo. Do not alter their age or gender.
 Generate a high-quality, professional-looking profile picture of the person from the reference image, depicting them in a realistic and confident manner.
 The image should have a 1:1 aspect ratio.
 The person should be performing the action or expressing the pose described: "${posePrompt.base}".
@@ -1015,11 +946,16 @@ Ensure professional or smart casual attire suitable for a business context.
 Use appropriate and flattering professional lighting.
 The background should be a subtle, professional setting (e.g., blurred office, clean studio backdrop, modern corporate environment).
 The final image should be a high-quality PNG.`;
-
-            return instruction;
         };
 
-        // NEW: Custom Loading Spinner React Component
+        // --- Shared React Components ---
+
+        /**
+         * Renders a loading spinner.
+         * @param {Object} props - Component props.
+         * @param {string} [props.size='fa-icon-standard'] - CSS class for spinner size.
+         * @param {string} [props.className=''] - Additional CSS classes.
+         */
         const LoadingSpinner = ({ size = 'fa-icon-standard', className = '' }) => {
             return (
                 <div className={`loading-spinner ${size} ${className}`} role="status" aria-label="Loading">
@@ -1028,26 +964,44 @@ The final image should be a high-quality PNG.`;
             );
         };
 
-        // Modal Close Button Component (using Font Awesome)
+        /**
+         * Renders a modal close button.
+         * @param {Object} props - Component props.
+         * @param {Function} props.onClick - Function to call on click.
+         * @param {boolean} [props.disabled=false] - Whether the button is disabled.
+         */
         const ModalCloseButton = ({ onClick, disabled }) => (
             <button onClick={onClick} disabled={disabled} className="modal-close" aria-label="關閉模態視窗">
                 <i className="fa-solid fa-xmark fa-2xl"></i>
             </button>
         );
 
-        // Tooltip Component
+        /**
+         * Renders a tooltip.
+         * @param {Object} props - Component props.
+         * @param {React.Node} props.children - The element to which the tooltip is attached.
+         * @param {string} props.text - The tooltip text.
+         */
         const Tooltip = ({ children, text }) => (
             <div className="tooltip relative group">
                 {children}
                 <span className="tooltip-text absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-text-dark-primary text-bg-light-primary text-xs rounded py-1 px-2 whitespace-nowrap z-10">
                     {text}
                 </span>
-                <div className="tooltip-text::after absolute top-full left-1/2 transform -translate-x-1/2 border-width-5 border-style-solid border-color-text-dark-primary-transparent-transparent-transparent"></div>
+                {/* CSS for tooltip arrow is already in global styles. No need for ::after in JSX */}
             </div>
         );
 
-        // --- React Components (Styling changed to new theme classes) ---
-
+        /**
+         * Renders a styled button.
+         * @param {Object} props - Component props.
+         * @param {React.Node} props.children - Button content.
+         * @param {Function} props.onClick - Click handler.
+         * @param {boolean} [props.disabled=false] - Whether the button is disabled.
+         * @param {boolean} [props.primary=false] - If true, renders a primary button.
+         * @param {string} [props.className=''] - Additional CSS classes.
+         * @param {string} props.ariaLabel - Accessible label for the button.
+         */
         const Button = ({ children, onClick, disabled, primary = false, className = '', ariaLabel }) => {
             const baseClass = "button"; 
             const themeClass = primary 
@@ -1067,6 +1021,15 @@ The final image should be a high-quality PNG.`;
             );
         };
 
+        /**
+         * Displays a generated profile picture with download/regenerate options.
+         * @param {Object} props - Component props.
+         * @param {string} props.poseName - Name of the pose.
+         * @param {string} props.imageUrl - URL of the image.
+         * @param {Function} props.onDownload - Handler for downloading the image.
+         * @param {Function} props.onRegenerate - Handler for regenerating the image.
+         * @param {'success'|'failed'} props.status - Status of the image generation.
+         */
         const ProfilePictureDisplay = ({ poseName, imageUrl, onDownload, onRegenerate, status }) => {
             let statusIcon;
             let cardClass = "profile-card-base";
@@ -1080,7 +1043,7 @@ The final image should be a high-quality PNG.`;
             return (
                 <div className={`relative group ${cardClass}`}>
                     <div className="profile-card-image-wrapper">
-                        <img src={imageUrl} alt={`您的形象照 - ${poseName}`} className="w-full h-full object-cover" />
+                        <img src={imageUrl} alt={`您的專業形象照 - ${poseName}`} className="w-full h-full object-cover" />
                     </div>
                     <p className="profile-card-pose-name">{poseName}</p>
                     
@@ -1090,7 +1053,7 @@ The final image should be a high-quality PNG.`;
                                 <Tooltip text="重新生成形象照">
                                     <button
                                         onClick={onRegenerate}
-                                        aria-label="重新生成形象照"
+                                        aria-label={`重新生成 "${poseName}" 形象照`}
                                     >
                                         <i className="fa-solid fa-arrow-rotate-right fa-icon-medium"></i>
                                     </button>
@@ -1098,7 +1061,7 @@ The final image should be a high-quality PNG.`;
                                 <Tooltip text="下載形象照">
                                     <button
                                         onClick={() => onDownload(imageUrl, poseName)}
-                                        aria-label="下載形象照"
+                                        aria-label={`下載 "${poseName}" 形象照`}
                                     >
                                         <i className="fa-solid fa-download fa-icon-medium"></i>
                                     </button>
@@ -1109,7 +1072,7 @@ The final image should be a high-quality PNG.`;
                             <Tooltip text="重試生成">
                                 <button
                                     onClick={onRegenerate}
-                                    aria-label="重新生成形象照"
+                                    aria-label={`重試生成 "${poseName}" 形象照`}
                                     className="bg-error-light hover:bg-error-light/80"
                                 >
                                     <i className="fa-solid fa-arrow-rotate-right fa-icon-medium text-white"></i>
@@ -1124,10 +1087,21 @@ The final image should be a high-quality PNG.`;
             );
         };
 
+        /**
+         * Renders a skeleton loader.
+         * @param {Object} props - Component props.
+         * @param {string} [props.className='h-5 w-1/2'] - CSS classes for size and shape.
+         */
         const SkeletonLoader = ({ className = "h-5 w-1/2" }) => (
             <div className={`animate-pulse bg-border-soft rounded-md ${className}`}></div>
         );
 
+        /**
+         * Renders a loading state profile card.
+         * @param {Object} props - Component props.
+         * @param {string} props.poseName - Name of the pose being loaded.
+         * @param {'pending'|'generating'} props.status - Current loading status.
+         */
         const LoadingProfileCard = ({ poseName, status }) => {
             return (
                 <div className="profile-card-base">
@@ -1142,12 +1116,18 @@ The final image should be a high-quality PNG.`;
             );
         };
 
+        /**
+         * Renders an error state profile card with a retry option.
+         * @param {Object} props - Component props.
+         * @param {string} props.poseName - Name of the pose that failed.
+         * @param {Function} props.onRegenerate - Handler for retrying generation.
+         */
         const ErrorProfileCard = ({ poseName, onRegenerate }) => {
             return (
                 <div className="profile-card-base border-error-light/50">
                     <div className="profile-card-image-wrapper flex flex-col items-center justify-center p-4 border-2 border-dashed error-card-border">
                         <p className="font-medium mb-4 error-card-text">生成失敗</p>
-                        <Button onClick={onRegenerate} primary>
+                        <Button onClick={onRegenerate} primary ariaLabel={`重試生成 "${poseName}" 形象照`}>
                             <i className="fa-solid fa-arrow-rotate-right fa-icon-medium"></i>
                             重試
                         </Button>
@@ -1160,19 +1140,31 @@ The final image should be a high-quality PNG.`;
             );
         };
 
-
+        /**
+         * Displays a transient error notification at the top of the screen.
+         * @param {Object} props - Component props.
+         * @param {string|null} props.message - The error message to display.
+         * @param {Function} props.onDismiss - Function to call when the notification is dismissed.
+         */
         const ErrorNotification = ({ message, onDismiss }) => {
             if (!message) return null;
             return (
                 <div className="fixed top-5 left-1/2 z-50 w-full max-w-md p-4 bg-panel-light border border-border-highlight text-dark-primary rounded-lg shadow-soft flex items-center justify-between animate-fade-in-down" style={{ transform: 'translateX(-50%)' }}>
                     <span>{message}</span>
-                    <button onClick={onDismiss} className="p-1 rounded-full hover:bg-bg-sub-panel-light transition-colors ml-4">
+                    <button onClick={onDismiss} className="p-1 rounded-full hover:bg-bg-sub-panel-light transition-colors ml-4" aria-label="關閉錯誤通知">
                         <i className="fa-solid fa-xmark fa-icon-medium text-text-muted-light"></i>
                     </button>
                 </div>
             );
         };
 
+        /**
+         * Modal for camera access and photo capture.
+         * @param {Object} props - Component props.
+         * @param {boolean} props.isOpen - Whether the modal is open.
+         * @param {Function} props.onClose - Handler to close the modal.
+         * @param {Function} props.onCapture - Handler to call with the captured image data URL.
+         */
         const CameraModal = ({ isOpen, onClose, onCapture }) => {
             const videoRef = useRef(null);
             const streamRef = useRef(null);
@@ -1211,25 +1203,24 @@ The final image should be a high-quality PNG.`;
                 } else {
                     stopCamera();
                 }
-                return () => {
-                    stopCamera();
-                };
+                // Cleanup on unmount or when modal closes
+                return () => stopCamera();
             }, [isOpen, startCamera, stopCamera]);
 
-            const handleCapture = () => {
+            const handleCapture = useCallback(() => {
                 if (videoRef.current) {
                     const video = videoRef.current;
-                    const canvas = document.createElement('canvas'); // Create temp canvas for capture
+                    const canvas = document.createElement('canvas'); 
                     canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
                     const context = canvas.getContext('2d');
                     context.scale(-1, 1); // Flip horizontally for selfie mode
                     context.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
                     const dataUrl = canvas.toDataURL('image/png');
-                    onCapture(dataUrl); // Pass directly to parent
+                    onCapture(dataUrl); 
                     onClose();
                 }
-            };
+            }, [onCapture, onClose]);
 
             if (!isOpen) return null;
 
@@ -1246,7 +1237,7 @@ The final image should be a high-quality PNG.`;
                             {cameraError ? (
                                 <div className="p-4 text-error-light">{cameraError}</div>
                             ) : (
-                                <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover transform -scale-x-100"></video>
+                                <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover transform -scale-x-100" aria-label="相機預覽"></video>
                             )}
                         </div>
 
@@ -1254,12 +1245,18 @@ The final image should be a high-quality PNG.`;
                             <button onClick={handleCapture} disabled={!!cameraError} className="w-20 h-20 rounded-full bg-accent-blue-main border-4 border-accent-blue-main focus:outline-none focus:ring-4 focus:ring-accent-green-vibrant transition-all hover:border-accent-green-vibrant disabled:opacity-50 disabled:cursor-not-allowed" aria-label="拍攝照片"></button>
                         </div>
                         
-                        <ModalCloseButton onClick={onClose} />
+                        <ModalCloseButton onClick={onClose} ariaLabel="關閉相機模態視窗" />
                     </div>
                 </div>
             );
         };
 
+        /**
+         * Modal providing instructions on how to obtain a Google Gemini API key.
+         * @param {Object} props - Component props.
+         * @param {boolean} props.isOpen - Whether the modal is open.
+         * @param {Function} props.onClose - Handler to close the modal.
+         */
         const ApiKeyTutorialModal = ({ isOpen, onClose }) => {
             if (!isOpen) return null;
             return (
@@ -1277,48 +1274,381 @@ The final image should be a high-quality PNG.`;
                             <li className="mb-2">系統會立即產生一組新的金鑰。點擊金鑰旁邊的複製圖示。</li>
                             <li>回到本頁面，將複製的金鑰貼到輸入框中即可！</li>
                         </ol>
-                        <p className="text-sm text-error-light"><strong>提醒：：</strong>請妥善保管您的 API 金鑰，不要與他人分享。</p>
-                        <ModalCloseButton onClick={onClose} />
+                        <p className="text-sm text-error-light"><strong>提醒：</strong>請妥善保管您的 API 金鑰，不要與他人分享。</p>
+                        <ModalCloseButton onClick={onClose} ariaLabel="關閉 API 金鑰教學模態視窗" />
                     </div>
                 </div>
             );
         };
 
-        // EditPosePromptModal is removed as prompt selection is no longer available
+        /**
+         * Handles API key input and display, including the tutorial modal.
+         * @param {Object} props - Component props.
+         * @param {string} props.apiKey - Current API key value.
+         * @param {Function} props.onApiKeyChange - Callback for API key changes.
+         * @param {boolean} props.isAnyAiProcessActive - Flag to disable input during AI processes.
+         */
+        const ApiKeyInputSection = ({ apiKey, onApiKeyChange, isAnyAiProcessActive }) => {
+            const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
 
-        const App = () => {
-            // Core State
-            const [uploadedImage, setUploadedImage] = useState(null); // The final image used for AI generation
-            const [generatedImages, setGeneratedImages] = useState([]);
-            const [isLoading, setIsLoading] = useState(false);
-            const [error, setError] = useState(null);
+            return (
+                <div className="console-panel">
+                    <h2 className="console-section-header">
+                        <i className="fa-solid fa-gear fa-icon-large text-accent-blue-main"></i>
+                        前置設定：API 金鑰
+                    </h2>
+                    <div className="info-box">
+                        <p>為使用 AI 形象照產生功能，請先前往 Google AI Studio 申請並貼上您的免費 API 金鑰。此金鑰將僅儲存在您的瀏覽器中，不會上傳至任何伺服器。</p>
+                    </div>
+                    <div className="mt-4">
+                        <div className="api-key-label-wrapper">
+                            <label htmlFor="user-api-key">您的 Google Gemini API 金鑰 (必填)</label>
+                            <span className="api-tutorial-link" onClick={() => setIsApiKeyModalOpen(true)}>(如何取得？)</span>
+                        </div>
+                        <input
+                            type="password"
+                            id="user-api-key"
+                            placeholder="請貼上您從 Google AI Studio 取得的 API 金鑰"
+                            value={apiKey}
+                            onChange={(e) => onApiKeyChange(e.target.value)}
+                            autoComplete="off"
+                            disabled={isAnyAiProcessActive}
+                            aria-label="Google Gemini API 金鑰輸入框"
+                        />
+                    </div>
+                    <ApiKeyTutorialModal 
+                        isOpen={isApiKeyModalOpen} 
+                        onClose={() => setIsApiKeyModalOpen(false)} 
+                    />
+                </div>
+            );
+        };
+
+        /**
+         * Handles image upload (via file input or drag-drop) and camera capture.
+         * @param {Object} props - Component props.
+         * @param {string|null} props.uploadedImage - Base64 URL of the current uploaded image.
+         * @param {Function} props.onImageSelected - Callback when an image is selected/captured.
+         * @param {Function} props.setAppError - Function to set application-wide errors.
+         * @param {boolean} props.isAnyAiProcessActive - Flag to disable actions during AI processes.
+         */
+        const ImageUploadSection = ({ uploadedImage, onImageSelected, setAppError, isAnyAiProcessActive }) => {
             const fileInputRef = useRef(null);
             const [isUploading, setIsUploading] = useState(false);
             const [isCameraOpen, setIsCameraOpen] = useState(false);
-            const resultsRef = useRef(null);
+
+            const handleImageFile = useCallback(async (file) => {
+                if (!file) return;
+
+                const maxSizeMB = CONSTANTS.MAX_IMAGE_SIZE_MB;
+                const maxDimensions = CONSTANTS.MAX_IMAGE_DIMENSIONS;
+
+                if (file.size > maxSizeMB * 1024 * 1024) {
+                    setAppError(`圖片檔案過大，請上傳小於 ${maxSizeMB}MB 的檔案。`);
+                    return;
+                }
+
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                try {
+                    await new Promise((resolve, reject) => {
+                        img.onload = () => {
+                            if (img.width > maxDimensions.width || img.height > maxDimensions.height) {
+                                setAppError(`圖片尺寸過大，請上傳小於 ${maxDimensions.width}x${maxDimensions.height} 的圖片。`);
+                                URL.revokeObjectURL(img.src);
+                                reject();
+                            } else {
+                                resolve();
+                            }
+                        };
+                        img.onerror = reject;
+                    });
+                } catch {
+                    return; // Error already set, prevent further processing
+                } finally {
+                    URL.revokeObjectURL(img.src); // Clean up the object URL
+                }
+
+                setIsUploading(true);
+                setAppError(null); // Clear previous errors
+                
+                try {
+                    const base64Image = await toBase64(file);
+                    onImageSelected(base64Image); 
+                } catch (err) {
+                    console.error("圖片讀取時發生錯誤:", err);
+                    setAppError("該圖片無法處理。請嘗試其他檔案。");
+                } finally {
+                    setIsUploading(false);
+                }
+            }, [onImageSelected, setAppError]);
+
+            const handleImageUpload = useCallback((event) => handleImageFile(event.target.files[0]), [handleImageFile]);
             
-            // Generate options state (simplified)
+            const handleDragOver = useCallback((e) => {
+                e.preventDefault();
+                e.stopPropagation(); 
+                e.currentTarget.classList.add('drag-over');
+            }, []);
+
+            const handleDragLeave = useCallback((e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.classList.remove('drag-over');
+            }, []);
+
+            const handleDrop = useCallback((e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleImageFile(file);
+                } else {
+                    setAppError("請拖曳圖片檔案 (JPG/PNG)。");
+                }
+            }, [handleImageFile, setAppError]);
+
+            const handleCaptureConfirm = useCallback((imageDataUrl) => {
+                onImageSelected(imageDataUrl);
+                setAppError(null);
+            }, [onImageSelected, setAppError]);
+
+            return (
+                <div className="console-panel">
+                    <h2 className="console-section-header">
+                        <i className="fa-solid fa-camera fa-icon-large text-accent-blue-main"></i>
+                        上傳或拍攝您的照片
+                    </h2>
+                    <div className="console-sub-panel !bg-transparent !shadow-none !border-none !p-0">
+                        <div 
+                            className={`image-upload-area ${uploadedImage ? 'has-image' : ''} ${isUploading ? 'uploading-animation' : ''}`}
+                            onClick={() => !uploadedImage && !isAnyAiProcessActive && fileInputRef.current && fileInputRef.current.click()}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                            aria-label="拖曳或點擊以上傳照片"
+                            role="button"
+                        >
+                            {isUploading ? (
+                                <div className="flex flex-col items-center" aria-live="polite">
+                                    <LoadingSpinner className="fa-icon-xl" />
+                                    <p className="text-text-muted-light mt-4">讀取中...</p>
+                                </div>
+                            ) : uploadedImage ? (
+                                <img src={uploadedImage} alt="已上傳的照片預覽" className="w-full h-full" />
+                            ) : (
+                                <div className="upload-placeholder flex flex-col items-center p-6 text-center">
+                                    <i className="fa-solid fa-cloud-arrow-up fa-xxl icon text-accent-blue-main"></i>
+                                    <p className="mt-2 text-lg text-dark-primary">點擊或拖曳檔案以上傳 (支援 JPG/PNG)</p>
+                                    <p className="mt-2 text-sm">或</p>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); 
+                                            setIsCameraOpen(true);
+                                        }}
+                                        className="mt-4 button-secondary"
+                                        disabled={isAnyAiProcessActive}
+                                        ariaLabel="使用相機拍攝照片"
+                                    >
+                                        <i className="fa-solid fa-camera fa-icon-medium"></i>
+                                        <span>使用相機</span>
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                        {uploadedImage && !isUploading && (
+                            <div className="upload-buttons">
+                                <Button onClick={() => fileInputRef.current && fileInputRef.current.click()} className="button-secondary" disabled={isAnyAiProcessActive} ariaLabel="更換已上傳的照片">
+                                    <i className="fa-solid fa-cloud-arrow-up fa-icon-medium"></i>
+                                    更換照片
+                                </Button>
+                                <Button onClick={() => setIsCameraOpen(true)} className="button-secondary" disabled={isAnyAiProcessActive} ariaLabel="重新拍攝照片">
+                                    <i className="fa-solid fa-camera fa-icon-medium"></i>
+                                    <span>重新拍攝</span>
+                                </Button>
+                            </div>
+                        )}
+                        <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/png, image/jpeg" className="hidden" aria-label="上傳圖片檔案" />
+                    </div>
+                    <CameraModal
+                        isOpen={isCameraOpen}
+                        onClose={() => setIsCameraOpen(false)}
+                        onCapture={handleCaptureConfirm}
+                    />
+                </div>
+            );
+        };
+
+        /**
+         * Displays generated images, loading progress, and actions like download/retry/start over.
+         * @param {Object} props - Component props.
+         * @param {Array<Object>} props.generatedImages - Array of generated image objects.
+         * @param {boolean} props.isLoading - Whether images are currently being generated.
+         * @param {number} props.progress - Generation progress percentage.
+         * @param {Function} props.onDownloadImage - Handler to download a single image.
+         * @param {Function} props.onRegenerateImage - Handler to regenerate a single image.
+         * @param {Function} props.onDownloadAll - Handler to download all successful images as a zip.
+         * @param {Function} props.onStartOver - Handler to reset the application.
+         * @param {boolean} props.isAnyAiProcessActive - Flag to disable actions during AI processes.
+         */
+        const ResultsDisplay = ({ 
+            generatedImages, 
+            isLoading, 
+            progress, 
+            onDownloadImage, 
+            onRegenerateImage, 
+            onDownloadAll, 
+            onStartOver, 
+            isAnyAiProcessActive 
+        }) => {
+            const resultsRef = useRef(null);
             const [isZipping, setIsZipping] = useState(false);
+
+            useEffect(() => {
+                if (isLoading) {
+                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, [isLoading]);
+
+            const handleDownloadAllAsZip = useCallback(async () => {
+                if (isZipping || typeof window.JSZip === 'undefined') {
+                    if (typeof window.JSZip === 'undefined') {
+                        alert("壓縮程式庫尚未載入，請稍後再試。"); // Simpler alert for internal component
+                    }
+                    return;
+                }
+                
+                setIsZipping(true);
+                
+                try {
+                    const zip = new window.JSZip();
+                    const successfulImages = generatedImages.filter(img => img.status === 'success');
+
+                    if (successfulImages.length === 0) {
+                        alert("沒有可以打包的形象照。"); // Simpler alert
+                        return;
+                    }
+
+                    const imagePromises = successfulImages.map(async (img) => {
+                        const response = await fetch(img.imageUrl);
+                        const blob = await response.blob();
+                        const fileName = `profile-picture-${img.id.toLowerCase().replace(/\s+/g, '-')}.png`;
+                        zip.file(fileName, blob);
+                    });
+
+                    await Promise.all(imagePromises);
+
+                    const content = await zip.generateAsync({ type: "blob" });
+                    
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(content);
+                    link.download = "ai-profile-pack.zip";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+
+                } catch (err) {
+                    console.error("建立壓縮檔時發生錯誤:", err);
+                    alert("建立壓縮檔失敗，請再試一次。"); // Simpler alert
+                } finally {
+                    setIsZipping(false);
+                }
+            }, [generatedImages, isZipping]);
+
+
+            if (!isLoading && generatedImages.length === 0) return null;
+
+            return (
+                <div ref={resultsRef} className="results-section">
+                    <h2 className="console-section-header">
+                        <i className="fa-solid fa-images fa-icon-large text-accent-blue-main"></i>
+                        您的專業形象照
+                    </h2>
+
+                    {isLoading && (
+                        <div className="w-full max-w-lg mx-auto mb-10 text-center">
+                            <div className="results-loader-progress">
+                                <div
+                                    className="results-loader-bar transition-all duration-500 ease-out"
+                                    style={{ width: `${progress}%` }}
+                                    role="progressbar"
+                                    aria-valuenow={progress}
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                />
+                            </div>
+                            <p className="text-text-muted-light mt-4 text-sm">生成形象照時請保持視窗開啟</p>
+                        </div>
+                    )}
+                    <div className="results-grid">
+                        {generatedImages.map((img, index) => {
+                            switch (img.status) {
+                                case 'success':
+                                    return <ProfilePictureDisplay
+                                        key={`${img.id}-${index}-success`}
+                                        poseName={img.id}
+                                        imageUrl={img.imageUrl}
+                                        onDownload={onDownloadImage}
+                                        onRegenerate={() => onRegenerateImage(index)}
+                                        status={img.status}
+                                    />;
+                                case 'failed':
+                                    return <ErrorProfileCard
+                                        key={`${img.id}-${index}-failed`}
+                                        poseName={img.id}
+                                        onRegenerate={() => onRegenerateImage(index)}
+                                        status={img.status}
+                                    />;
+                                case 'pending':
+                                case 'generating':
+                                default:
+                                    return <LoadingProfileCard 
+                                        key={`${img.id}-${index}-pending`} 
+                                        poseName={img.id} 
+                                        status={img.status}
+                                    />;
+                            }
+                        })}
+                    </div>
+
+                    {!isLoading && generatedImages.length > 0 && (
+                        <div className="text-center mt-20 flex flex-col sm:flex-row items-center justify-center gap-6">
+                            <Button onClick={onStartOver} disabled={isAnyAiProcessActive} ariaLabel="重新開始新的生成">
+                                <i className="fa-solid fa-arrow-rotate-right fa-icon-medium"></i>
+                                重新開始
+                            </Button>
+                            <Button onClick={handleDownloadAllAsZip} primary disabled={isZipping || isAnyAiProcessActive} ariaLabel="打包下載所有已成功生成的形象照">
+                                <div className="flex items-center gap-2">
+                                {isZipping ? (
+                                    <>
+                                    <LoadingSpinner className="fa-icon-medium" />
+                                    <span>打包中...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="fa-solid fa-file-zipper fa-icon-standard"></i>
+                                        <span>打包下載</span>
+                                    </>
+                                )}
+                                </div>
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+
+        // --- Main Application Component ---
+        const App = () => {
+            const [uploadedImage, setUploadedImage] = useState(null); 
+            const [generatedImages, setGeneratedImages] = useState([]);
+            const [isLoading, setIsLoading] = useState(false);
+            const [error, setError] = useState(null);
             
             const [apiKey, setApiKey] = useState('');
-            const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
-
-            // Cancel generation flag (kept for potential future re-implementation, currently unused as button is removed)
-            const [cancelGeneration, setCancelGeneration] = useState(false);
-
-            // Memoized values
-            const progress = useMemo(() => {
-                return generatedImages.length > 0
-                    ? (generatedImages.filter(img => img.status !== 'pending' && img.status !== 'generating').length / generatedImages.length) * 100
-                    : 0;
-            }, [generatedImages]);
-
-            // Select 3 random poses from the predefined list
-            const posesForGeneration = useMemo(() => {
-                const shuffled = [...PREDEFINED_PROFESSIONAL_POSES].sort(() => 0.5 - Math.random());
-                return shuffled.slice(0, CONSTANTS.FIXED_GENERATE_COUNT);
-            }, [generatedImages.length]); // Re-shuffle only when generatedImages count changes (e.g., on start over)
-
 
             // On component mount: load saved API key
             useEffect(() => {
@@ -1340,12 +1670,28 @@ The final image should be a high-quality PNG.`;
 
             const getActiveApiKey = useCallback(() => apiKey.trim(), [apiKey]);
 
-            const regenerateImageAtIndex = async (imageIndex) => {
+            const setAppErrorMemo = useCallback((message) => setAppError(setError, message), []);
+            const dismissError = useCallback(() => setError(null), []);
+
+            const handleImageSelected = useCallback((base64Image) => {
+                setUploadedImage(base64Image);
+                setGeneratedImages([]); // Clear previous results on new image upload
+                setError(null);
+            }, []);
+
+
+            // Select 3 random poses from the predefined list
+            const posesForGeneration = useMemo(() => {
+                const shuffled = [...PREDEFINED_PROFESSIONAL_POSES].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, CONSTANTS.FIXED_GENERATE_COUNT);
+            }, [uploadedImage]); // Re-shuffle only when a new image is uploaded
+
+            const regenerateImageAtIndex = useCallback(async (imageIndex) => {
                 const imageToRegenerate = generatedImages[imageIndex];
                 if (!imageToRegenerate) return;
             
                 setGeneratedImages(prev => prev.map((img, index) =>
-                    index === imageIndex ? { ...img, status: 'pending' } : img
+                    index === imageIndex ? { ...img, status: 'pending', imageUrl: null } : img
                 ));
                 setError(null);
             
@@ -1360,7 +1706,7 @@ The final image should be a high-quality PNG.`;
 
                 if (!getActiveApiKey()) {
                     setAppError(setError, "請提供您的 Google Gemini API 金鑰來重新生成形象照。");
-                    setGeneratedImages(prev => prev.map((img, index) => prev[index].status = 'failed'));
+                    setGeneratedImages(prev => prev.map((img, index) => index === imageIndex ? { ...img, status: 'failed' } : img));
                     return;
                 }
     
@@ -1390,86 +1736,10 @@ The final image should be a high-quality PNG.`;
                         index === imageIndex ? { ...img, status: 'failed' } : img
                     ));
                 }
-            };
+            }, [generatedImages, posesForGeneration, uploadedImage, getActiveApiKey, setError]);
             
-            // Handles file input or drag-drop for initial image processing (with validation)
-            const handleImageFile = async (file) => {
-                if (!file) return;
-
-                const maxSizeMB = CONSTANTS.MAX_IMAGE_SIZE_MB;
-                const maxDimensions = CONSTANTS.MAX_IMAGE_DIMENSIONS;
-
-                if (file.size > maxSizeMB * 1024 * 1024) {
-                    setAppError(setError, `圖片檔案過大，請上傳小於 ${maxSizeMB}MB 的檔案。`);
-                    return;
-                }
-
-                const img = new Image();
-                img.src = URL.createObjectURL(file);
-                await new Promise((resolve, reject) => {
-                    img.onload = () => {
-                        if (img.width > maxDimensions.width || img.height > maxDimensions.height) {
-                            setAppError(setError, `圖片尺寸過大，請上傳小於 ${maxDimensions.width}x${maxDimensions.height} 的圖片。`);
-                            URL.revokeObjectURL(img.src);
-                            reject();
-                        } else {
-                            resolve();
-                        }
-                    };
-                    img.onerror = reject;
-                });
-
-                setIsUploading(true);
-                setError(null);
-                
-                try {
-                    const base64Image = await toBase64(file);
-                    setUploadedImage(base64Image); // Directly set the uploaded image
-                    setGeneratedImages([]); 
-                    setError(null); 
-                } catch (err) {
-                    console.error("圖片讀取時發生錯誤:", err);
-                    setAppError(setError, "該圖片無法處理。請嘗試其他檔案。");
-                } finally {
-                    setIsUploading(false);
-                }
-            };
-
-            const handleImageUpload = (event) => handleImageFile(event.target.files[0]);
-            
-            // Drag and Drop Handlers
-            const handleDragOver = (e) => {
-                e.preventDefault();
-                e.stopPropagation(); 
-                e.currentTarget.classList.add('drag-over');
-            };
-
-            const handleDragLeave = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.currentTarget.classList.remove('drag-over');
-            };
-
-            const handleDrop = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.currentTarget.classList.remove('drag-over');
-                const file = e.dataTransfer.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    handleImageFile(file);
-                } else {
-                    setAppError(setError, "請拖曳圖片檔案 (JPG/PNG)。");
-                }
-            };
-
-            // For Camera capture 
-            const handleCaptureConfirm = (imageDataUrl) => {
-                setUploadedImage(imageDataUrl); // Directly set the captured image
-                setGeneratedImages([]);
-                setError(null);
-            };
-
-            const handleGenerateClick = async () => {
+            // Generate all images logic
+            const handleGenerateClick = useCallback(async () => {
                 if (!uploadedImage) {
                     setAppError(setError, "請先上傳一張照片！");
                     return;
@@ -1483,12 +1753,7 @@ The final image should be a high-quality PNG.`;
                 setIsLoading(true);
                 setError(null);
                 setGeneratedImages([]);
-                setCancelGeneration(false); // Reset cancel flag
                 
-                setTimeout(() => {
-                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-
                 const imageWithoutPrefix = uploadedImage.split(',')[1];
                 const initialPlaceholders = posesForGeneration.map(p => ({
                     id: p.id,
@@ -1499,13 +1764,6 @@ The final image should be a high-quality PNG.`;
 
                 // Generate images sequentially to manage state updates per pose
                 for (let i = 0; i < posesForGeneration.length; i++) {
-                    if (cancelGeneration) { // Check cancel flag before each generation
-                        setIsLoading(false);
-                        setGeneratedImages([]);
-                        setAppError(setError, "生成已被取消。");
-                        return;
-                    }
-
                     const p = posesForGeneration[i];
                     setGeneratedImages(prev => prev.map((img, index) => 
                         index === i ? { ...img, status: 'generating' } : img 
@@ -1540,96 +1798,43 @@ The final image should be a high-quality PNG.`;
                 }
 
                 setIsLoading(false);
-            };
+            }, [uploadedImage, getActiveApiKey, posesForGeneration, setError]);
 
-            const triggerDownload = (href, fileName) => {
+            const triggerDownload = useCallback((href, fileName) => {
                 const link = document.createElement('a');
                 link.href = href;
                 link.download = fileName;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-            };
+            }, []);
             
-            const handleDownloadRequest = (imageUrl, poseName) => {
+            const handleDownloadRequest = useCallback((imageUrl, poseName) => {
                 const fileName = `profile-picture-${poseName.toLowerCase().replace(/\s+/g, '-')}.png`;
                 triggerDownload(imageUrl, fileName);
-            };
+            }, [triggerDownload]);
 
-            const handleDownloadAllAsZip = async () => {
-                if (isZipping || typeof window.JSZip === 'undefined') {
-                    if (typeof window.JSZip === 'undefined') {
-                         setAppError(setError, "壓縮程式庫尚未載入，請稍後再試。");
-                    }
-                    return;
-                }
-                
-                setIsZipping(true);
-                setError(null);
-                
-                try {
-                    const zip = new window.JSZip();
-                    const successfulImages = generatedImages.filter(img => img.status === 'success');
-
-                    if (successfulImages.length === 0) {
-                        setAppError(setError, "沒有可以打包的形象照。");
-                        return;
-                    }
-
-                    const imagePromises = successfulImages.map(async (img) => {
-                        const response = await fetch(img.imageUrl);
-                        const blob = await response.blob();
-                        const fileName = `profile-picture-${img.id.toLowerCase().replace(/\s+/g, '-')}.png`;
-                        zip.file(fileName, blob);
-                    });
-
-                    await Promise.all(imagePromises);
-
-                    const content = await zip.generateAsync({ type: "blob" });
-                    
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(content);
-                    link.download = "ai-profile-pack.zip";
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(link.href);
-
-                } catch (err) {
-                    console.error("建立壓縮檔時發生錯誤:", err);
-                    setAppError(setError, "建立壓縮檔失敗，請再試一次。");
-                } finally {
-                    setIsZipping(false);
-                }
-            };
-            
-            const handleStartOver = () => {
+            const handleStartOver = useCallback(() => {
                 setGeneratedImages([]);
                 setUploadedImage(null);
                 setError(null);
-                setCancelGeneration(false);
+                // Reset posesForGeneration by re-setting uploadedImage
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
+            }, []);
 
             // Check if any AI-related process is active to disable general buttons
-            const isAnyAiProcessActive = isLoading || isUploading || isCameraOpen;
+            const isAnyAiProcessActive = isLoading; // isUploading and isCameraOpen moved to ImageUploadSection state
+
+            const progress = useMemo(() => {
+                const completed = generatedImages.filter(img => img.status === 'success' || img.status === 'failed').length;
+                return generatedImages.length > 0 ? (completed / generatedImages.length) * 100 : 0;
+            }, [generatedImages]);
 
             return (
                 <>
-                    <CameraModal
-                        isOpen={isCameraOpen}
-                        onClose={() => setIsCameraOpen(false)}
-                        onCapture={handleCaptureConfirm}
-                    />
-                    <ApiKeyTutorialModal 
-                        isOpen={isApiKeyModalOpen} 
-                        onClose={() => setIsApiKeyModalOpen(false)} 
-                    />
-                    {/* EditPosePromptModal is removed */}
-
+                    <ErrorNotification message={error} onDismiss={dismissError} />
+                    
                     <div className="container min-h-screen flex flex-col">
-                        <ErrorNotification message={error} onDismiss={() => setError(null)} />
-                        
                         <header>
                             <h1 className="font-bold">
                                 專業形象照神生成系統
@@ -1638,99 +1843,26 @@ The final image should be a high-quality PNG.`;
                         </header>
 
                         <main className="flex-grow">
-                            {/* NEW: Initial Setup Grid for API Key and Image Upload */}
                             <div className="initial-setup-grid">
-                                {/* API Key Input Section (Left Column) */}
-                                <div className="console-panel">
-                                    <h2 className="console-section-header">
-                                        <i className="fa-solid fa-gear fa-icon-large text-accent-blue-main"></i>
-                                        前置設定：API 金鑰
-                                    </h2>
-                                    <div className="info-box">
-                                        <p>為使用 AI 形象照產生功能，請先前往 Google AI Studio 申請並貼上您的免費 API 金鑰。此金鑰將僅儲存在您的瀏覽器中，不會上傳至任何伺服器。</p>
-                                    </div>
-                                    <div className="mt-4">
-                                        <div className="api-key-label-wrapper">
-                                            <label htmlFor="user-api-key">您的 Google Gemini API 金鑰 (必填)</label>
-                                            <span className="api-tutorial-link" onClick={() => setIsApiKeyModalOpen(true)}>(如何取得？)</span>
-                                        </div>
-                                        <input
-                                            type="password"
-                                            id="user-api-key"
-                                            placeholder="請貼上您從 Google AI Studio 取得的 API 金鑰"
-                                            value={apiKey}
-                                            onChange={(e) => handleApiKeyChange(e.target.value)}
-                                            autoComplete="off"
-                                            disabled={isAnyAiProcessActive}
-                                        />
-                                    </div>
-                                </div>
+                                <ApiKeyInputSection 
+                                    apiKey={apiKey} 
+                                    onApiKeyChange={handleApiKeyChange} 
+                                    isAnyAiProcessActive={isAnyAiProcessActive} 
+                                />
+                                <ImageUploadSection
+                                    uploadedImage={uploadedImage}
+                                    onImageSelected={handleImageSelected}
+                                    setAppError={setAppErrorMemo}
+                                    isAnyAiProcessActive={isAnyAiProcessActive}
+                                />
+                            </div>
 
-                                {/* Image Upload Section (Right Column) */}
-                                <div className="console-panel">
-                                    <h2 className="console-section-header">
-                                        <i className="fa-solid fa-camera fa-icon-large text-accent-blue-main"></i>
-                                        上傳或拍攝您的照片
-                                    </h2>
-                                    <div className="console-sub-panel !bg-transparent !shadow-none !border-none !p-0">
-                                        <div 
-                                            className={`image-upload-area ${uploadedImage ? 'has-image' : ''} ${isUploading ? 'uploading-animation' : ''}`}
-                                            onClick={() => !uploadedImage && fileInputRef.current && fileInputRef.current.click()}
-                                            onDragOver={handleDragOver}
-                                            onDragLeave={handleDragLeave}
-                                            onDrop={handleDrop}
-                                        >
-                                            {isUploading ? (
-                                                <div className="flex flex-col items-center">
-                                                    <LoadingSpinner className="fa-icon-xl" />
-                                                    <p className="text-text-muted-light mt-4">讀取中...</p>
-                                                </div>
-                                            ) : uploadedImage ? (
-                                                <img src={uploadedImage} alt="上傳預覽" className="w-full h-full" />
-                                            ) : (
-                                                <div className="upload-placeholder flex flex-col items-center p-6 text-center">
-                                                    <i className="fa-solid fa-cloud-arrow-up fa-xxl icon text-accent-blue-main"></i>
-                                                    <p className="mt-2 text-lg text-dark-primary">點擊或拖曳檔案以上傳 (支援 JPG/PNG)</p>
-                                                    <p className="mt-2 text-sm">或</p>
-                                                    <Button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation(); 
-                                                            setIsCameraOpen(true);
-                                                        }}
-                                                        className="mt-4 button-secondary"
-                                                        disabled={isAnyAiProcessActive}
-                                                        ariaLabel="使用相機拍攝照片"
-                                                    >
-                                                        <i className="fa-solid fa-camera fa-icon-medium"></i>
-                                                        <span>使用相機</span>
-                                                    </Button>
-                                                </div>
-                                            )}
-                                        </div>
-                                        {uploadedImage && !isUploading && (
-                                            <div className="upload-buttons">
-                                                <Button onClick={() => fileInputRef.current && fileInputRef.current.click()} className="button-secondary" disabled={isAnyAiProcessActive} ariaLabel="更換照片">
-                                                    <i className="fa-solid fa-cloud-arrow-up fa-icon-medium"></i>
-                                                    更換照片
-                                                </Button>
-                                                <Button onClick={() => setIsCameraOpen(true)} className="button-secondary" disabled={isAnyAiProcessActive} ariaLabel="重新拍攝照片">
-                                                    <i className="fa-solid fa-camera fa-icon-medium"></i>
-                                                    <span>重新拍攝</span>
-                                                </Button>
-                                            </div>
-                                        )}
-                                        <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/png, image/jpeg" className="hidden" />
-                                    </div>
-                                </div>
-                            </div> {/* End of Initial Setup Grid */}
-
-                            {/* Global Generate Button (Moved here) */}
                             <div className="generate-button-area">
                                 <Button
                                     onClick={handleGenerateClick}
                                     disabled={!uploadedImage || isAnyAiProcessActive || !getActiveApiKey()}
                                     primary
-                                    ariaLabel="專業形象照神生成"
+                                    ariaLabel="生成專業形象照"
                                 >
                                     <div className="flex items-center justify-center gap-3">
                                         {isLoading ? (
@@ -1741,90 +1873,23 @@ The final image should be a high-quality PNG.`;
                                         ) : (
                                             <>
                                                 <i className="fa-solid fa-sparkles fa-icon-standard"></i>
-                                                <span>專業形象照神生成</span>
+                                                <span>專業形象照神生成 ({CONSTANTS.FIXED_GENERATE_COUNT} 張)</span>
                                             </>
                                         )}
                                     </div>
                                 </Button>
                             </div>
 
-
-                            <div ref={resultsRef} className="results-section">
-                                {(isLoading || generatedImages.length > 0) && (
-                                    <>
-                                        <h2 className="console-section-header">
-                                            <i className="fa-solid fa-images fa-icon-large text-accent-blue-main"></i>
-                                            您的專業形象照
-                                        </h2>
-
-                                        {isLoading && (
-                                            <div className="w-full max-w-lg mx-auto mb-10 text-center">
-                                                <div className="results-loader-progress">
-                                                    <div
-                                                        className="results-loader-bar transition-all duration-500 ease-out"
-                                                        style={{ width: `${progress}%` }}
-                                                    />
-                                                </div>
-                                                <p className="text-text-muted-light mt-4 text-sm">生成形象照時請保持視窗開啟</p>
-                                            </div>
-                                        )}
-                                        <div className="results-grid">
-                                            {generatedImages.map((img, index) => {
-                                                switch (img.status) {
-                                                    case 'success':
-                                                        return <ProfilePictureDisplay
-                                                            key={`${img.id}-${index}-success`}
-                                                            poseName={img.id}
-                                                            imageUrl={img.imageUrl}
-                                                            onDownload={handleDownloadRequest}
-                                                            onRegenerate={() => regenerateImageAtIndex(index)}
-                                                            status={img.status}
-                                                        />;
-                                                    case 'failed':
-                                                        return <ErrorProfileCard
-                                                            key={`${img.id}-${index}-failed`}
-                                                            poseName={img.id}
-                                                            onRegenerate={() => regenerateImageAtIndex(index)}
-                                                            status={img.status}
-                                                        />;
-                                                    case 'pending':
-                                                    case 'generating':
-                                                    default:
-                                                        return <LoadingProfileCard 
-                                                            key={`${img.id}-${index}-pending`} 
-                                                            poseName={img.id} 
-                                                            status={img.status}
-                                                        />;
-                                                }
-                                            })}
-                                        </div>
-                                    </>
-                                )}
-
-                                {!isLoading && generatedImages.length > 0 && (
-                                    <div className="text-center mt-20 flex flex-col sm:flex-row items-center justify-center gap-6">
-                                        <Button onClick={handleStartOver} disabled={isAnyAiProcessActive} ariaLabel="重新開始">
-                                            <i className="fa-solid fa-arrow-rotate-right fa-icon-medium"></i>
-                                            重新開始
-                                        </Button>
-                                        <Button onClick={handleDownloadAllAsZip} primary disabled={isZipping || isAnyAiProcessActive} ariaLabel="打包下載所有形象照">
-                                            <div className="flex items-center gap-2">
-                                            {isZipping ? (
-                                                <>
-                                                <LoadingSpinner className="fa-icon-medium" />
-                                                <span>打包中...</span>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <i className="fa-solid fa-file-zipper fa-icon-standard"></i>
-                                                    <span>打包下載</span>
-                                                </>
-                                            )}
-                                            </div>
-                                        </Button>
-                                    </div>
-                                )}
-                            </div>
+                            <ResultsDisplay
+                                generatedImages={generatedImages}
+                                isLoading={isLoading}
+                                progress={progress}
+                                onDownloadImage={handleDownloadRequest}
+                                onRegenerateImage={regenerateImageAtIndex}
+                                onDownloadAll={handleDownloadRequest} // Will be handled internally by ResultsDisplay
+                                onStartOver={handleStartOver}
+                                isAnyAiProcessActive={isAnyAiProcessActive}
+                            />
                         </main>
                         
                         <footer className="mt-auto"> 
